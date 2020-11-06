@@ -1,4 +1,4 @@
-import { Scene, PerspectiveCamera, WebGLRenderer } from "three";
+import { Scene, OrthographicCamera, WebGLRenderer } from "three";
 import OrbitControls from "orbit-controls-es6";
 import CustomPlane from "./CustomPlane";
 
@@ -7,6 +7,7 @@ class App {
     console.clear();
 
     this.onResize = this.onResize.bind(this);
+    this.onScroll = this.onScroll.bind(this);
     this.render = this.render.bind(this);
 
     this.initScene();
@@ -16,6 +17,8 @@ class App {
     this.addObjects();
 
     this.render();
+
+    document.addEventListener("scroll", this.onScroll);
   }
 
   initScene() {
@@ -23,27 +26,35 @@ class App {
   }
 
   initCamera() {
-    this.camera = new PerspectiveCamera(
-      75,
-      window.innerWidth / window.innerHeight,
-      0.1,
+    this.camera = new OrthographicCamera(
+      window.innerWidth / -2,
+      window.innerWidth / 2,
+      window.innerHeight / 2,
+      window.innerHeight / -2,
+      1,
       1000
     );
-    this.camera.position.z = 100;
-    new OrbitControls(this.camera, this.renderer.domElement);
+    this.camera.position.z = 10;
+    const oc = new OrbitControls(this.camera, this.renderer.domElement);
+    oc.enableZoom = false;
   }
 
   initRenderer() {
     this.renderer = new WebGLRenderer({
       canvas: document.getElementById("js-canvas"),
       antialias: true,
+      alpha: true,
     });
-    this.renderer.setClearColor(0x263339);
+    this.renderer.setClearColor(0xffffff, 0);
     window.addEventListener("resize", this.onResize);
   }
 
   onResize() {
     this.setRendererSize();
+  }
+
+  onScroll() {
+    this.camera.position.y = -scrollY;
   }
 
   setRendererSize() {
@@ -54,13 +65,11 @@ class App {
 
   addObjects() {
     this.customPlane = new CustomPlane();
-    this.scene.add(this.customPlane.mesh);
+    this.scene.add(this.customPlane);
   }
 
   render() {
     requestAnimationFrame(this.render);
-
-    this.customPlane.mesh.material.uniforms.u_time.value++;
 
     this.renderer.render(this.scene, this.camera);
   }

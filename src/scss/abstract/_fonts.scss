@@ -1,0 +1,15 @@
+@font-face {
+  font-family: $font-body;
+  src: url("../fonts/poppins-regular-webfont.woff2") format("woff2"),
+    url("../fonts/poppins-regular-webfont.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: $font-headings;
+  src: url("../fonts/hwyl_fawr_hello-webfont.woff2") format("woff2"),
+    url("../fonts/hwyl_fawr_hello-webfont.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+}

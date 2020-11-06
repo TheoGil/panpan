@@ -5,6 +5,9 @@ dist/*
 node_modules/
 *.log
 
+# Reference files
+reference/
+
 # OS generated files
 .DS_Store
 .DS_Store?
