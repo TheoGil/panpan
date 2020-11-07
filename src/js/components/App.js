@@ -1,6 +1,15 @@
-import { Scene, OrthographicCamera, WebGLRenderer } from "three";
+import {
+  Scene,
+  OrthographicCamera,
+  WebGLRenderer,
+  Frustum,
+  Matrix4,
+  Vector3,
+} from "three";
 import OrbitControls from "orbit-controls-es6";
+import map from '../map';
 import CustomPlane from "./CustomPlane";
+
 
 class App {
   constructor() {
@@ -11,6 +20,7 @@ class App {
     this.render = this.render.bind(this);
 
     this.initScene();
+
     this.initRenderer();
     this.initCamera();
     this.setRendererSize();
@@ -54,7 +64,26 @@ class App {
   }
 
   onScroll() {
-    this.camera.position.y = -scrollY;
+    const screensCount = 1; // SCREEN COUNT - 1
+    const verticalOffset = 434;
+    let cameraPositionY = map(
+      window.scrollY,
+      0,
+      document.body.scrollHeight - window.innerHeight,
+      0,
+      -(window.scrollY + screensCount * verticalOffset)
+    );
+
+    this.camera.position.y = cameraPositionY;
+    
+    const zipBagFlowOffset = map(
+      scrollY,
+      0,
+      document.body.scrollHeight - window.innerHeight,
+      0.028,
+      0.812
+    );
+    this.customPlane.flow.setOffset(zipBagFlowOffset);
   }
 
   setRendererSize() {

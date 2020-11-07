@@ -3,8 +3,11 @@
   width: 100%;
   display: flex; // Center children verticaly
 
+  // opacity: 0.1; // DEBUG
+
   .zipbag-container {
     display: flex;
     align-items: center;
+    opacity: 0;
   }
 }
