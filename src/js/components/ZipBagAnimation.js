@@ -194,19 +194,23 @@ class CustomPlane extends Object3D {
     // We'll use this helper to get the position of the zipbag.
     // Why not just move the zipbag the same way we are moving the helper ? Because the vertex shader, in addition to moving the mesh along the curve also displace it along the curve.
 
-    const geometry = new PlaneGeometry(
-      this.zipBagWidth,
-      this.zipBagHeight,
-      10,
-      10
-    );
+    if (DEBUG) {
+      const geometry = new PlaneGeometry(
+        this.zipBagWidth,
+        this.zipBagHeight,
+        10,
+        10
+      );
 
-    const material = new MeshBasicMaterial({
-      color: 0xff0000,
-      wireframe: true,
-    });
+      const material = new MeshBasicMaterial({
+        color: 0xff0000,
+        wireframe: true,
+      });
 
-    this.zipBagHelper = new Mesh(geometry, material);
+      this.zipBagHelper = new Mesh(geometry, material);
+    } else {
+      this.zipBagHelper = new Object3D();
+    }
 
     this.add(this.zipBagHelper);
 
