@@ -65,7 +65,7 @@ class CustomPlane extends Object3D {
 
     const material = new ShaderMaterial({
       // wireframe: true,
-      transparent: DEBUG,
+      transparent: true,
       uniforms: {
         uTexture: {
           type: "t",
