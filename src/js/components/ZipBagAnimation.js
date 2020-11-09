@@ -17,14 +17,16 @@ import {
 // import { Flow } from "three/examples/jsm/modifiers/CurveModifier";
 import { Flow } from "../CurveModifier";
 import Tweakpane from "tweakpane";
+import MotionLine from "./MotionLine";
 import vertexShader from "../../shaders/zipbag/vertex.vert";
 import fragmentShader from "../../shaders/zipbag/fragment.frag";
 import zipBagtexture from "../../img/zipbag.png";
 import map from "../map";
 
+const DEBUG = false;
+
 const PARAMS = {
   offset: 0,
-  debug: true,
 };
 
 class CustomPlane extends Object3D {
@@ -35,7 +37,8 @@ class CustomPlane extends Object3D {
     this.initFlowCurve();
     this.initFlow();
     this.initZipBagHelper();
-    this.initGUI();
+    this.initMotionLine();
+    // this.initGUI();
 
     new TextureLoader().load(zipBagtexture, (texture) => {
       this.flow.object3D.material.uniforms.uTexture.value = texture;
@@ -62,7 +65,7 @@ class CustomPlane extends Object3D {
 
     const material = new ShaderMaterial({
       // wireframe: true,
-      transparent: PARAMS.debug,
+      transparent: DEBUG,
       uniforms: {
         uTexture: {
           type: "t",
@@ -109,7 +112,7 @@ class CustomPlane extends Object3D {
         bezierHandle.y = zipBagTop.y + this.bezierHandlesOffset;
       }
 
-      if (PARAMS.debug) {
+      if (DEBUG) {
         this.displayDebugPoint(
           new Vector3(zipBagTop.x, zipBagTop.y - BCR.height / 2, 1),
           0xff0000
@@ -140,7 +143,7 @@ class CustomPlane extends Object3D {
     this.curvePath = new CurvePath();
     this.curvePath.curves = [c1, c2, c3];
 
-    if (PARAMS.debug) {
+    if (DEBUG) {
       const points = this.curvePath.getPoints(50);
       const line = new Line(
         new BufferGeometry().setFromPoints(points),
@@ -247,6 +250,39 @@ class CustomPlane extends Object3D {
       .on("change", (value) => {
         this.flow.uniforms.pathOffset.value = value;
       });
+
+    this.gui.addInput(
+      this.motionLine.mesh.material.uniforms.dashOffset,
+      "value",
+      {
+        min: 0,
+        max: 1,
+        step: 0.001,
+        label: "dashOffset",
+      }
+    );
+
+    this.gui.addInput(
+      this.motionLine.mesh.material.uniforms.dashArray,
+      "value",
+      {
+        min: 0,
+        max: 1,
+        step: 0.001,
+        label: "dashArray",
+      }
+    );
+
+    this.gui.addInput(
+      this.motionLine.mesh.material.uniforms.dashRatio,
+      "value",
+      {
+        min: 0,
+        max: 1,
+        step: 0.001,
+        label: "dashRatio",
+      }
+    );
   }
 
   displayDebugPoint(pt, color = 0xff0000, size = 20) {
@@ -256,6 +292,13 @@ class CustomPlane extends Object3D {
     );
     mesh.position.set(pt.x, pt.y, 1);
     this.add(mesh);
+  }
+
+  initMotionLine() {
+    this.motionLine = new MotionLine({
+      screens: this.screens,
+    });
+    this.add(this.motionLine);
   }
 }
 

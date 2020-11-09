@@ -37,8 +37,8 @@ class App {
       1000
     );
     this.camera.position.z = 10;
-    const oc = new OrbitControls(this.camera, this.renderer.domElement);
-    oc.enableZoom = false;
+    // const oc = new OrbitControls(this.camera, this.renderer.domElement);
+    // oc.enableZoom = false;
   }
 
   initRenderer() {
@@ -58,6 +58,7 @@ class App {
   onScroll() {
     this.updateCameraPosition();
     this.updateZipBagPosition();
+    this.updateZipBagMotionLines();
   }
 
   updateCameraPosition() {
@@ -89,6 +90,20 @@ class App {
     this.zipBagAnimation.updateZipBagHelper(
       window.scrollY / (document.body.scrollHeight - window.innerHeight)
     );
+  }
+
+  updateZipBagMotionLines() {
+    const offset = map(
+      window.scrollY,
+      0,
+      document.body.scrollHeight - window.innerHeight,
+      1,
+      -(
+        1 -
+        this.zipBagAnimation.motionLine.mesh.material.uniforms.dashRatio.value
+      )
+    );
+    this.zipBagAnimation.motionLine.mesh.material.uniforms.dashOffset.value = offset;
   }
 
   setRendererSize() {
