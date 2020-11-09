@@ -20,9 +20,11 @@ import Tweakpane from "tweakpane";
 import vertexShader from "../../shaders/zipbag/vertex.vert";
 import fragmentShader from "../../shaders/zipbag/fragment.frag";
 import zipBagtexture from "../../img/zipbag.png";
+import map from "../map";
 
 const PARAMS = {
   offset: 0,
+  debug: true,
 };
 
 class CustomPlane extends Object3D {
@@ -30,13 +32,13 @@ class CustomPlane extends Object3D {
     super();
 
     this.initZipBag();
-    this.initCurve();
+    this.initFlowCurve();
     this.initFlow();
+    this.initZipBagHelper();
     this.initGUI();
 
     new TextureLoader().load(zipBagtexture, (texture) => {
       this.flow.object3D.material.uniforms.uTexture.value = texture;
-      // this.flow.object3D.material.uniforms.uTexture.value.needsUpdate = true;
     });
   }
 
@@ -60,7 +62,7 @@ class CustomPlane extends Object3D {
 
     const material = new ShaderMaterial({
       // wireframe: true,
-      transparent: true,
+      transparent: PARAMS.debug,
       uniforms: {
         uTexture: {
           type: "t",
@@ -69,21 +71,19 @@ class CustomPlane extends Object3D {
       },
       vertexShader,
       fragmentShader,
-      defines: {
-        USE_UV: true,
-      },
     });
 
     this.zipBagMesh = new Mesh(geometry, material);
   }
 
-  initCurve() {
+  initFlowCurve() {
+    this.screens = [];
+
     // How stiff the curve will be
     // Setting it to the zipBag height is juuuust right *chef kiss* 👨‍🍳👌
     this.bezierHandlesOffset = this.zipBagHeight;
 
     const zipBagPositions = document.querySelectorAll(".js-zipbag-position");
-    const screens = [];
     zipBagPositions.forEach((el, i) => {
       const BCR = el.getBoundingClientRect();
       const verticalOffset = i * this.bezierHandlesOffset;
@@ -93,13 +93,6 @@ class CustomPlane extends Object3D {
         -(BCR.y - window.innerHeight / 2) - verticalOffset,
         0
       );
-
-      // ----- DEBUG
-      this.displayDebugPoint(
-        new Vector3(zipBagTop.x, zipBagTop.y - BCR.height / 2, 1),
-        0x0000ff
-      );
-      // ----- DEBUG
 
       const zipBagBottom = new Vector3(
         zipBagTop.x,
@@ -116,35 +109,46 @@ class CustomPlane extends Object3D {
         bezierHandle.y = zipBagTop.y + this.bezierHandlesOffset;
       }
 
-      this.displayDebugPoint(zipBagTop, 0x0000ff);
-      this.displayDebugPoint(zipBagBottom, 0x0000ff);
-      this.displayDebugPoint(bezierHandle, 0x00ff00);
+      if (PARAMS.debug) {
+        this.displayDebugPoint(
+          new Vector3(zipBagTop.x, zipBagTop.y - BCR.height / 2, 1),
+          0xff0000
+        ); // Center
+        this.displayDebugPoint(zipBagTop, 0x0000ff);
+        this.displayDebugPoint(zipBagBottom, 0x0000ff);
+        this.displayDebugPoint(bezierHandle, 0x00ff00);
+      }
 
-      screens.push({ zipBagTop, zipBagBottom, bezierHandle });
+      this.screens.push({ zipBagTop, zipBagBottom, bezierHandle });
     });
 
-    const c1 = new LineCurve3(screens[0].zipBagTop, screens[0].zipBagBottom);
-    const c2 = new CubicBezierCurve3(
-      screens[0].zipBagBottom,
-      screens[0].bezierHandle,
-      screens[1].bezierHandle,
-      screens[1].zipBagTop
+    const c1 = new LineCurve3(
+      this.screens[0].zipBagTop,
+      this.screens[0].zipBagBottom
     );
-    const c3 = new LineCurve3(screens[1].zipBagTop, screens[1].zipBagBottom);
+    const c2 = new CubicBezierCurve3(
+      this.screens[0].zipBagBottom,
+      this.screens[0].bezierHandle,
+      this.screens[1].bezierHandle,
+      this.screens[1].zipBagTop
+    );
+    const c3 = new LineCurve3(
+      this.screens[1].zipBagTop,
+      this.screens[1].zipBagBottom
+    );
 
     this.curvePath = new CurvePath();
     this.curvePath.curves = [c1, c2, c3];
 
-    // ----- DEBUG
-    // ADD LINE TO SCENE TO VISUALISE THE CURVE
-    const points = this.curvePath.getPoints(50);
-    const line = new Line(
-      new BufferGeometry().setFromPoints(points),
-      new LineBasicMaterial({ color: 0x0000ff })
-    );
-    line.position.z = 1;
-    this.add(line);
-    // ----- DEBUG
+    if (PARAMS.debug) {
+      const points = this.curvePath.getPoints(50);
+      const line = new Line(
+        new BufferGeometry().setFromPoints(points),
+        new LineBasicMaterial({ color: 0x0000ff })
+      );
+      line.position.z = 1;
+      this.add(line);
+    }
   }
 
   initFlow() {
@@ -177,6 +181,59 @@ class CustomPlane extends Object3D {
     ).toFixed(3);
 
     this.add(this.flow.object3D);
+  }
+
+  initZipBagHelper() {
+    // NOTE :
+    // The position helper is and Object3D that will visually follow the zipbag as it is displaced along the curve
+    // This helper exists because the zipbag position is updated from a vertex shader in the GPU, thus, its modified positioned
+    // cannot be retrieved in JS on the CPU.
+    // We'll use this helper to get the position of the zipbag.
+    // Why not just move the zipbag the same way we are moving the helper ? Because the vertex shader, in addition to moving the mesh along the curve also displace it along the curve.
+
+    const geometry = new PlaneGeometry(
+      this.zipBagWidth,
+      this.zipBagHeight,
+      10,
+      10
+    );
+
+    const material = new MeshBasicMaterial({
+      color: 0xff0000,
+      wireframe: true,
+    });
+
+    this.zipBagHelper = new Mesh(geometry, material);
+
+    this.add(this.zipBagHelper);
+
+    // Compute the offset amount for the follower to be positioned right on the center of the zipbag
+    // Remember: the zipbag origin is [.5, 0] but the follower is [.5, .5]
+    const length = this.curvePath
+      .getCurveLengths()
+      .reduce((previousValue, currentValue) => previousValue + currentValue);
+    const lengthMinusHeight = length - this.zipBagHeight;
+    this.normalizedZipBagHelperOffset = 1 - lengthMinusHeight / length;
+
+    this.zipBagHelperAxis = new Vector3(0, 1, 0);
+  }
+
+  updateZipBagHelper(amount) {
+    const t = map(
+      amount,
+      0,
+      1,
+      this.normalizedZipBagHelperOffset,
+      1 - this.normalizedZipBagHelperOffset
+    );
+
+    const newPos = this.curvePath.getPoint(t);
+    this.zipBagHelper.position.set(newPos.x, newPos.y, newPos.z);
+
+    // Compute rotation based on the curve angle at position t
+    const tangent = this.curvePath.getTangent(t);
+    const rotation = Math.acos(this.zipBagHelperAxis.dot(tangent));
+    this.zipBagHelper.rotation.z = rotation;
   }
 
   initGUI() {

@@ -85,6 +85,10 @@ class App {
       0,
       this.zipBagAnimation.maxFlowOffset
     );
+
+    this.zipBagAnimation.updateZipBagHelper(
+      window.scrollY / (document.body.scrollHeight - window.innerHeight)
+    );
   }
 
   setRendererSize() {
