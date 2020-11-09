@@ -1,15 +1,7 @@
-import {
-  Scene,
-  OrthographicCamera,
-  WebGLRenderer,
-  Frustum,
-  Matrix4,
-  Vector3,
-} from "three";
+import { Scene, OrthographicCamera, WebGLRenderer } from "three";
 import OrbitControls from "orbit-controls-es6";
-import map from '../map';
-import CustomPlane from "./CustomPlane";
-
+import map from "../map";
+import ZipBagAnimation from "./ZipBagAnimation";
 
 class App {
   constructor() {
@@ -64,26 +56,35 @@ class App {
   }
 
   onScroll() {
-    const screensCount = 1; // SCREEN COUNT - 1
-    const verticalOffset = 434;
-    let cameraPositionY = map(
+    this.updateCameraPosition();
+    this.updateZipBagPosition();
+  }
+
+  updateCameraPosition() {
+    const screensCount = 2;
+
+    const cameraPositionYMax = -(
+      window.scrollY +
+      (screensCount - 1) * this.zipBagAnimation.bezierHandlesOffset
+    );
+
+    this.camera.position.y = map(
       window.scrollY,
       0,
       document.body.scrollHeight - window.innerHeight,
       0,
-      -(window.scrollY + screensCount * verticalOffset)
+      cameraPositionYMax
     );
+  }
 
-    this.camera.position.y = cameraPositionY;
-    
-    const zipBagFlowOffset = map(
-      scrollY,
+  updateZipBagPosition() {
+    this.zipBagAnimation.flow.uniforms.pathOffset.value = map(
+      window.scrollY,
       0,
       document.body.scrollHeight - window.innerHeight,
-      0.028,
-      0.812
+      0,
+      this.zipBagAnimation.maxFlowOffset
     );
-    this.customPlane.flow.setOffset(zipBagFlowOffset);
   }
 
   setRendererSize() {
@@ -93,8 +94,8 @@ class App {
   }
 
   addObjects() {
-    this.customPlane = new CustomPlane();
-    this.scene.add(this.customPlane);
+    this.zipBagAnimation = new ZipBagAnimation();
+    this.scene.add(this.zipBagAnimation);
   }
 
   render() {

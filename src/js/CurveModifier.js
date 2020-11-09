@@ -129,6 +129,10 @@ export function modifyShader(material, uniforms, numberOfCurves = 1) {
   if (material.__ok) return;
   material.__ok = true;
 
+  if (material.onBeforeCompile) {
+    material.onBeforeCompile();
+  }
+
   material.onBeforeCompile = (shader) => {
     if (shader.__modified) return;
     shader.__modified = true;
