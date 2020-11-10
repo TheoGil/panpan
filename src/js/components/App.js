@@ -56,26 +56,13 @@ class App {
   }
 
   onScroll() {
-    this.updateCameraPosition();
     this.updateZipBagPosition();
     this.updateZipBagMotionLines();
+    this.updateCameraPosition();
   }
 
   updateCameraPosition() {
-    const screensCount = 2;
-
-    const cameraPositionYMax = -(
-      window.scrollY +
-      (screensCount - 1) * this.zipBagAnimation.bezierHandlesOffset
-    );
-
-    this.camera.position.y = map(
-      window.scrollY,
-      0,
-      document.body.scrollHeight - window.innerHeight,
-      0,
-      cameraPositionYMax
-    );
+    this.camera.position.y = this.zipBagAnimation.zipBagHelper.position.y;
   }
 
   updateZipBagPosition() {
