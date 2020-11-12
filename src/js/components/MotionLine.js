@@ -19,7 +19,7 @@ class MotionLine extends Object3D {
   }
 
   init() {
-    const zipBagPositions = document.querySelectorAll(".js-zipbag-position");
+    const zipBagPositions = document.querySelectorAll(".js-zipbag");
     const vertices = [
       [
         [0.5, 0.5, -1],
@@ -39,6 +39,7 @@ class MotionLine extends Object3D {
     // How stiff the curve will be
     // Setting it to the zipBag height is juuuust right *chef kiss* 👨‍🍳👌
     this.bezierHandlesOffset = 434;
+
     zipBagPositions.forEach((el, i) => {
       const verticalOffset = i * this.bezierHandlesOffset;
       const BCR = el.getBoundingClientRect();
