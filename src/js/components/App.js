@@ -1,7 +1,10 @@
 import { Scene, OrthographicCamera, WebGLRenderer } from "three";
 import OrbitControls from "orbit-controls-es6";
+import { debounce } from "throttle-debounce";
 import map from "../map";
 import ZipBagAnimation from "./ZipBagAnimation";
+
+const DEBUG = false;
 
 class App {
   constructor() {
@@ -9,6 +12,7 @@ class App {
 
     this.onResize = this.onResize.bind(this);
     this.onScroll = this.onScroll.bind(this);
+    // this.debounceResize = debounce(200, this.debounceResize.bind(this));
     this.render = this.render.bind(this);
 
     this.initScene();
@@ -21,6 +25,7 @@ class App {
     this.render();
 
     document.addEventListener("scroll", this.onScroll);
+    window.addEventListener("resize", debounce(200, this.onResize));
   }
 
   initScene() {
@@ -37,8 +42,11 @@ class App {
       1000
     );
     this.camera.position.z = 10;
-    // const oc = new OrbitControls(this.camera, this.renderer.domElement);
-    // oc.enableZoom = false;
+
+    if (DEBUG) {
+      const oc = new OrbitControls(this.camera, this.renderer.domElement);
+      oc.enableZoom = false;
+    }
   }
 
   initRenderer() {
@@ -48,11 +56,24 @@ class App {
       alpha: true,
     });
     this.renderer.setClearColor(0xffffff, 0);
-    window.addEventListener("resize", this.onResize);
+  }
+
+  setRendererSize() {
+    this.renderer.setSize(window.innerWidth, window.innerHeight);
+  }
+
+  setCameraFrustrum() {
+    this.camera.left = window.innerWidth / -2;
+    this.camera.right = window.innerWidth / 2;
+    this.camera.top = window.innerHeight / 2;
+    this.camera.bottom = window.innerHeight / -2;
+    this.camera.updateProjectionMatrix();
   }
 
   onResize() {
+    this.setCameraFrustrum();
     this.setRendererSize();
+    this.zipBagAnimation.updateCurve();
   }
 
   onScroll() {
@@ -91,12 +112,6 @@ class App {
       )
     );
     this.zipBagAnimation.motionLine.mesh.material.uniforms.dashOffset.value = offset;
-  }
-
-  setRendererSize() {
-    this.camera.aspect = window.innerWidth / window.innerHeight;
-    this.camera.updateProjectionMatrix();
-    this.renderer.setSize(window.innerWidth, window.innerHeight);
   }
 
   addObjects() {

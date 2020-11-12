@@ -13,9 +13,10 @@ import {
   Line,
   BufferGeometry,
   LineBasicMaterial,
+  CatmullRomCurve3,
 } from "three";
-// import { Flow } from "three/examples/jsm/modifiers/CurveModifier";
-import { Flow } from "../CurveModifier";
+import { Flow } from "three/examples/jsm/modifiers/CurveModifier";
+// import { Flow } from "../CurveModifier";
 import Tweakpane from "tweakpane";
 import MotionLine from "./MotionLine";
 import vertexShader from "../../shaders/zipbag/vertex.vert";
@@ -33,6 +34,8 @@ class CustomPlane extends Object3D {
   constructor() {
     super();
 
+    this.debugMeshes = [];
+
     this.initZipBag();
     this.initFlowCurve();
     this.initFlow();
@@ -47,11 +50,11 @@ class CustomPlane extends Object3D {
 
   initZipBag() {
     const DOMNode = document.querySelector(".js-zipbag");
-    const BCR = DOMNode.getBoundingClientRect();
 
     // Compute zipbag dimensions based on its reference DOM node
-    this.zipBagWidth = BCR.width;
-    this.zipBagHeight = BCR.height;
+    const bbox = DOMNode.getBoundingClientRect();
+    this.zipBagWidth = bbox.width;
+    this.zipBagHeight = bbox.height;
 
     const widthSegments = 1; // Visually looks good, feel free to change if needed
     const heightSegments = 20; // Visually looks good, feel free to change if needed
@@ -86,25 +89,27 @@ class CustomPlane extends Object3D {
     // Setting it to the zipBag height is juuuust right *chef kiss* 👨‍🍳👌
     this.bezierHandlesOffset = this.zipBagHeight;
 
-    const zipBagPositions = document.querySelectorAll(".js-zipbag-position");
+    const zipBagPositions = document.querySelectorAll(".js-zipbag");
     zipBagPositions.forEach((el, i) => {
-      const BCR = el.getBoundingClientRect();
+      const bbox = el.getBoundingClientRect();
+
       const verticalOffset = i * this.bezierHandlesOffset;
 
       const zipBagTop = new Vector3(
-        BCR.x + BCR.width / 2 - window.innerWidth / 2,
-        -(BCR.y - window.innerHeight / 2) - verticalOffset,
+        bbox.x + bbox.width / 2 - window.innerWidth / 2,
+        -(bbox.y - window.innerHeight / 2) - verticalOffset,
         0
       );
 
       const zipBagBottom = new Vector3(
         zipBagTop.x,
-        zipBagTop.y - BCR.height,
+        zipBagTop.y - bbox.height,
         0
       );
 
       // The bezier handle position computation change a bit based on wether we are on a even on
       let bezierHandle = new Vector3(zipBagTop.x, 0, 0);
+
       const screenIndexIsEven = i % 2 === 0;
       if (screenIndexIsEven) {
         bezierHandle.y = zipBagBottom.y - this.bezierHandlesOffset;
@@ -114,12 +119,12 @@ class CustomPlane extends Object3D {
 
       if (DEBUG) {
         this.displayDebugPoint(
-          new Vector3(zipBagTop.x, zipBagTop.y - BCR.height / 2, 1),
+          new Vector3(zipBagTop.x, zipBagTop.y - bbox.height / 2, 1),
           0xff0000
         ); // Center
         this.displayDebugPoint(zipBagTop, 0x0000ff);
         this.displayDebugPoint(zipBagBottom, 0x0000ff);
-        this.displayDebugPoint(bezierHandle, 0x00ff00);
+        // this.displayDebugPoint(bezierHandle, 0x00ff00);
       }
 
       this.screens.push({ zipBagTop, zipBagBottom, bezierHandle });
@@ -129,12 +134,14 @@ class CustomPlane extends Object3D {
       this.screens[0].zipBagTop,
       this.screens[0].zipBagBottom
     );
+
     const c2 = new CubicBezierCurve3(
       this.screens[0].zipBagBottom,
       this.screens[0].bezierHandle,
       this.screens[1].bezierHandle,
       this.screens[1].zipBagTop
     );
+
     const c3 = new LineCurve3(
       this.screens[1].zipBagTop,
       this.screens[1].zipBagBottom
@@ -151,6 +158,7 @@ class CustomPlane extends Object3D {
       );
       line.position.z = 1;
       this.add(line);
+      this.debugMeshes.push(line);
     }
   }
 
@@ -170,10 +178,20 @@ class CustomPlane extends Object3D {
     // original (before curve modification is applid) mesh vertices
     this.flow.object3D.frustumCulled = false;
 
+    this.setSpineOffset();
+
+    this.setMaxFlowOffset();
+
+    this.add(this.flow.object3D);
+  }
+
+  setSpineOffset() {
     // Sets the default mesh offset alongside the spine
     // This ensure that when setting the pathOffset uniforms to 0, the mesh is displayed exactly at the begining of the spine.
     this.flow.uniforms.spineOffset.value = this.zipBagHeight / 2;
+  }
 
+  setMaxFlowOffset() {
     // If the pathOffset uniform goes beyond this value,
     // The mesh will be strech from the end of the spine to the beginning of the spine.
     // Setting the pathOffset uniforms to this.maxFlowOffset will display the mesh exactly at the end of the spine.
@@ -182,8 +200,6 @@ class CustomPlane extends Object3D {
       1 -
       this.zipBagHeight / this.flow.uniforms.spineLength.value
     ).toFixed(3);
-
-    this.add(this.flow.object3D);
   }
 
   initZipBagHelper() {
@@ -243,6 +259,26 @@ class CustomPlane extends Object3D {
     this.zipBagHelper.rotation.z = rotation;
   }
 
+  updateCurve() {
+    this.debugMeshes.forEach((mesh) => {
+      this.remove(mesh);
+    });
+    this.debugMeshes = [];
+
+    // Compute the new zipbag dimensions
+    const DOMNode = document.querySelector(".js-zipbag");
+    const bbox = DOMNode.getBoundingClientRect();
+    this.zipBagWidth = bbox.width;
+    this.zipBagHeight = bbox.height;
+
+    // Recompute the curve, based on the new zipbags dimensions and positions
+    this.initFlowCurve();
+    this.flow.updateCurve(0, this.curvePath);
+
+    this.setSpineOffset();
+    this.setMaxFlowOffset();
+  }
+
   initGUI() {
     this.gui = new Tweakpane();
     this.gui
@@ -296,6 +332,7 @@ class CustomPlane extends Object3D {
     );
     mesh.position.set(pt.x, pt.y, 1);
     this.add(mesh);
+    this.debugMeshes.push(mesh);
   }
 
   initMotionLine() {
