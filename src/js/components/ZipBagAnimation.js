@@ -338,6 +338,7 @@ class CustomPlane extends Object3D {
   initMotionLine() {
     this.motionLine = new MotionLine({
       screens: this.screens,
+      bezierHandlesOffset: this.bezierHandlesOffset,
     });
     this.add(this.motionLine);
   }

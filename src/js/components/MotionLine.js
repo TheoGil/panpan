@@ -15,6 +15,8 @@ class MotionLine extends Object3D {
   constructor(options) {
     super(options);
 
+    this.bezierHandlesOffset = options.bezierHandlesOffset;
+
     this.init(options.screens);
   }
 
@@ -35,10 +37,6 @@ class MotionLine extends Object3D {
     ];
 
     const curvePoints = [];
-
-    // How stiff the curve will be
-    // Setting it to the zipBag height is juuuust right *chef kiss* 👨‍🍳👌
-    this.bezierHandlesOffset = 434;
 
     zipBagPositions.forEach((el, i) => {
       const verticalOffset = i * this.bezierHandlesOffset;
@@ -80,7 +78,6 @@ class MotionLine extends Object3D {
 
     this.mesh = new Mesh(this.geometry, this.material);
     this.add(this.mesh);
-    // this.updateGeometry();
   }
 
   displayDebugPoint(pt, color = 0xff0000, size = 20) {
