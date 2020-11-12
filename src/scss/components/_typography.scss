@@ -8,5 +8,26 @@ h6 {
 }
 
 h1 {
-  font-size: 75px;
+  font-size: 50px;
+  margin-top: 20px;
+  line-height: 0.9;
+  font-weight: 400; // normal
+
+  @include bp($medium) {
+    font-size: 60px;
+  }
+
+  @include bp($large) {
+    font-size: 75px;
+  }
+}
+
+.h2 {
+  margin: 0 0 10px 0;
+  font-size: 30px;
+  font-weight: 400; // normal
+}
+
+.p {
+  font-size: 14px;
 }

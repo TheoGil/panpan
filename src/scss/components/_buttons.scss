@@ -1,8 +1,19 @@
 .button {
+  position: relative;
   font-family: $font-body;
   background-color: transparent;
   border: 1px black solid;
   font-size: 1rem;
   padding: 10px 20px;
   cursor: pointer;
+  border-width: 0;
+
+  .border {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    stroke-width: 30px;
+  }
 }

@@ -1,0 +1,34 @@
+.wrapper {
+  width: 100%;
+  height: 100%; // Makes sure wrapper fills whole available space when using a column layout (small devices)
+  max-width: $wrapper-width;
+  margin: auto;
+  display: flex; // Distribute columns evenly within row
+  flex-direction: column;
+  height: 100%; // Makes sure row fills whole available space when using a column layout (small devices)
+
+  @include bp($medium) {
+    flex-direction: row;
+  }
+}
+
+.column {
+  box-sizing: border-box;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center; // Center children verticaly
+  align-items: flex-start; // Justify children to the left
+
+  @include bp($medium) {
+    width: 50%;
+  }
+
+  &-text {
+    padding: $padding-column-text;
+
+    @include bp($large) {
+      padding: $padding-column-text-large;
+    }
+  }
+}

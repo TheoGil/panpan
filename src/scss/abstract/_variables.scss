@@ -1,3 +1,17 @@
 // FONTS
 $font-body: "Poppins";
 $font-headings: "Hwyl Fawr Hello";
+
+// DIMENSIONS
+$wrapper-width: 1200px;
+$padding-column-text-x-large: 60px;
+$padding-column-text-y-large: 0;
+$padding-column-text-large: $padding-column-text-y-large
+  $padding-column-text-x-large;
+$padding-column-text-x: 20px;
+$padding-column-text-y: 0;
+$padding-column-text: $padding-column-text-y $padding-column-text-x;
+
+// BREAKPOINTS
+$medium: 800px;
+$large: 1000px;

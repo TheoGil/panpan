@@ -1,3 +1,7 @@
 .intro {
   display: flex;
+
+  @include bp($medium) {
+    font-size: 75px;
+  }
 }

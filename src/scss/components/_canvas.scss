@@ -1,6 +1,7 @@
 canvas {
   // display: none; // DEBUG
-  // pointer-events: none;
+  // opacity: 0.5; // DEBUG
+  pointer-events: none;
   position: fixed;
   top: 0;
   left: 0;

@@ -1,8 +1,10 @@
 @import "./abstract/variables";
+@import "./abstract/breakpoints";
 @import "./abstract/fonts";
-@import "./abstract/grid";
+@import "./components/grid";
 @import "./components/typography";
-@import "./components/wrapper";
+@import "./components/spritesheet";
+@import "./components/icon-list";
 @import "./components/canvas";
 @import "./components/buttons";
 @import "./components/screen";

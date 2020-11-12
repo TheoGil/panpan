@@ -1,13 +1,50 @@
 .screen {
-  height: 100vh;
+  min-height: 100vh; // Do not explicitly set height because content will overflow on smaller devices
   width: 100%;
   display: flex; // Center children verticaly
-
-  // opacity: 0.1; // DEBUG
+  overflow: hidden; // Prevent scrollbar on small devices when increasing the column-zipbag dimensions
 
   .zipbag-container {
+    position: relative;
     display: flex;
+    justify-content: center;
     align-items: center;
+    width: 100%;
+    box-sizing: border-box;
+    margin: 50px auto;
+    max-width: 80%;
+
+    @include bp($medium) {
+      width: 50%;
+      max-width: none;
+    }
+  }
+
+  .zipbag {
+    width: 30vw;
     opacity: 0;
+
+    @include bp($medium) {
+      width: auto;
+    }
+  }
+
+  .text-container {
+    box-sizing: border-box;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center; // Center children verticaly
+    align-items: flex-start; // Justify children to the left
+
+    padding: $padding-column-text;
+
+    @include bp($medium) {
+      width: 50%;
+    }
+
+    @include bp($large) {
+      padding: $padding-column-text-large;
+    }
   }
 }

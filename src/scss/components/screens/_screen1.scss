@@ -1,47 +1,103 @@
 .screen-1 {
-  background-color: #fbd9d0;
+  .wrapper {
+    @include bp($medium) {
+      flex-direction: row-reverse;
+    }
+  }
 
   .intro {
     display: flex;
     margin-bottom: 40px;
 
-    &-line {
-      width: 50px;
-      height: 2px;
-      background-color: black;
-      margin: 0.5em 30px 0;
+    &-hyphen {
+      box-sizing: border-box;
+      width: 20%;
+      padding: 0 20px;
+      stroke-width: 3px;
+      fill: none;
+      stroke: currentColor;
+
+      @include bp(1350px) {
+        width: 100px;
+      }
     }
 
     &-content {
-      margin-top: 0;
+      margin: 0;
+      width: 80%;
     }
   }
 
-  .grid {
-    display: grid;
-    grid-template-columns: 30% auto 30%;
-    grid-template-rows: 8% 18% auto 12% 6%;
-    gap: 0px 0px;
-    grid-template-areas:
-      "dog1 .      ."
-      "dog1 zipbag ."
-      ".    zipbag ."
-      ".    zipbag dog2"
-      ".    .      dog2";
+  .zipbag-backdrop {
+    position: absolute;
+    height: 75%;
+    width: 50%;
+    z-index: -1;
+    top: 50%;
+    left: 50%;
+    transform: translate(-65%, -50%);
+    fill: #d6e9f9;
+  }
 
-    div {
-      &:nth-of-type(1) {
-        // background-color: #fbd9d0;
-        grid-area: dog1;
-      }
-      &:nth-of-type(2) {
-        // background-color: #daecfa;
-        grid-area: zipbag;
-      }
-      &:nth-of-type(3) {
-        // background-color: #eeccfe;
-        grid-area: dog2;
-      }
+  .bubble-1 {
+    position: absolute;
+    z-index: -1;
+    top: -10%;
+    left: 20px;
+    width: 20%;
+
+    @include bp(1350px) {
+      left: -5%;
     }
+
+    .background {
+      fill: #fad6ce;
+    }
+
+    .image {
+      width: 100%;
+      transform: translate(-10%, 20%);
+    }
+  }
+
+  .bubble-2 {
+    position: absolute;
+    z-index: -1;
+    bottom: -10%;
+    right: 20px;
+    width: 26%;
+
+    @include bp(1350px) {
+      right: -10%;
+    }
+
+    .background {
+      fill: #eeccfe;
+    }
+
+    .image {
+      width: 100%;
+      transform: translate(20%, 20%);
+    }
+  }
+
+  .doodle-1 {
+    position: absolute;
+    z-index: -1;
+    top: 60%;
+    left: 10%;
+    transform-origin: 50% 50%;
+    transform: rotate(-90deg);
+    width: 11%;
+  }
+
+  .doodle-2 {
+    position: absolute;
+    z-index: -1;
+    top: 10%;
+    right: 10%;
+    transform-origin: 50% 50%;
+    width: 11%;
+    // transform: rotate(-45deg);
   }
 }
