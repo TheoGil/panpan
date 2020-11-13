@@ -15,17 +15,21 @@ class App {
     // this.debounceResize = debounce(200, this.debounceResize.bind(this));
     this.render = this.render.bind(this);
 
-    this.initScene();
+    // @TODO UPDATE ON RESIZE
+    this.scrollableHeight = document.body.scrollHeight - window.innerHeight;
 
+    this.initScene();
     this.initRenderer();
     this.initCamera();
     this.setRendererSize();
     this.addObjects();
 
-    this.render();
-
     document.addEventListener("scroll", this.onScroll);
+
+    this.render();
+    /*
     window.addEventListener("resize", debounce(200, this.onResize));
+    */
   }
 
   initScene() {
@@ -77,25 +81,49 @@ class App {
   }
 
   onScroll() {
+    const scrollAmount = window.scrollY / this.scrollableHeight;
+
     this.updateZipBagPosition();
+    this.zipBagAnimation.updateZipBagHelper(scrollAmount);
+
+    /*this.updateFoodPosition();
     this.updateZipBagMotionLines();
+    */
     this.updateCameraPosition();
   }
 
   updateCameraPosition() {
-    this.camera.position.y = this.zipBagAnimation.zipBagHelper.position.y;
+    // CAMERA ALWAYS FOLLOW HELPER
+    // this.camera.position.y = this.zipBagAnimation.zipBagHelper.position.y;
+
+    const screensCount = document.querySelectorAll(".js-zipbag").length;
+    const threeSceneHeight =
+      this.scrollableHeight +
+      this.zipBagAnimation.path.yOff * (screensCount - 1);
+
+    const cameraPositionYMax = -threeSceneHeight;
+
+    this.camera.position.y = map(
+      window.scrollY,
+      0,
+      this.scrollableHeight,
+      0,
+      cameraPositionYMax
+    );
   }
 
   updateZipBagPosition() {
     this.zipBagAnimation.flow.uniforms.pathOffset.value = map(
       window.scrollY,
       0,
-      document.body.scrollHeight - window.innerHeight,
+      this.scrollableHeight,
       0,
       this.zipBagAnimation.maxFlowOffset
     );
+  }
 
-    this.zipBagAnimation.updateZipBagHelper(
+  updateFoodPosition() {
+    this.zipBagAnimation.food.update(
       window.scrollY / (document.body.scrollHeight - window.innerHeight)
     );
   }
@@ -115,7 +143,9 @@ class App {
   }
 
   addObjects() {
-    this.zipBagAnimation = new ZipBagAnimation();
+    this.zipBagAnimation = new ZipBagAnimation({
+      camera: this.camera,
+    });
     this.scene.add(this.zipBagAnimation);
   }
 
