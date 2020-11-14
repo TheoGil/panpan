@@ -1,0 +1,82 @@
+.screen-3 {
+  // background-color: #eeccfe;
+
+  .wrapper {
+    position: relative;
+    display: block;
+    // @TODO USE THE SAME PADDING AS THE TEXT CONTAINER
+    padding-left: 60px;
+    padding-right: 60px;
+  }
+
+  .zipbag-container {
+    @include bp($medium) {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+  }
+
+  .zipbag-backdrop {
+    position: absolute;
+    z-index: -1;
+    fill: #daeefe;
+    width: 65%;
+    height: 100%;
+  }
+
+  .h2 {
+    position: relative;
+
+    @include bp($medium) {
+      &::before {
+        content: "";
+        position: absolute;
+        top: 50%;
+        width: 100px;
+        height: 2px;
+        background-color: black;
+      }
+    }
+  }
+
+  .ingredient-list {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    margin: 0;
+    list-style-type: none;
+
+    .ingredient-list-entry {
+      width: 100%;
+      text-align: center;
+
+      @include bp($medium) {
+        width: 30%;
+      }
+
+      &:nth-child(even) {
+        margin-right: auto;
+
+        .h2 {
+          &::before {
+            left: 100%;
+          }
+        }
+      }
+
+      &:nth-child(odd) {
+        margin-left: auto;
+
+        .h2 {
+          &::before {
+            right: 100%;
+          }
+        }
+      }
+    }
+  }
+}

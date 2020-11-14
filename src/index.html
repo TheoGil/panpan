@@ -6,11 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   </head>
   <body>
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      xlink:href=""
-      class="svg-spritesheet"
-    >
+    <svg xmlns="http://www.w3.org/2000/svg" class="svg-spritesheet">
       <symbol id="paw" viewBox="0 -32 512 512">
         <desc>Dog paw</desc>
         <path
@@ -50,43 +46,45 @@
             viewBox="0 0 871 1150"
             class="zipbag-backdrop"
           >
-            <filter
-              id="turbulence"
-              x="-20%"
-              y="-20%"
-              width="140%"
-              height="140%"
-              filterUnits="objectBoundingBox"
-              primitiveUnits="userSpaceOnUse"
-              color-interpolation-filters="linearRGB"
-            >
-              <feTurbulence
-                type="fractalNoise"
-                baseFrequency="0.002 0.002"
-                numOctaves="1"
-                seed="1"
-                stitchTiles="stitch"
-                result="turbulence"
+            <defs>
+              <filter
+                id="turbulence"
+                x="-20%"
+                y="-20%"
+                width="140%"
+                height="140%"
+                filterUnits="objectBoundingBox"
+                primitiveUnits="userSpaceOnUse"
+                color-interpolation-filters="linearRGB"
               >
-                <animate
-                  id="noiseAnimate"
-                  attributeName="seed"
-                  from="0"
-                  to="100"
-                  dur="20s"
-                  repeatCount="indefinite"
-                ></animate>
-              </feTurbulence>
+                <feTurbulence
+                  type="fractalNoise"
+                  baseFrequency="0.002 0.002"
+                  numOctaves="1"
+                  seed="1"
+                  stitchTiles="stitch"
+                  result="turbulence"
+                >
+                  <animate
+                    id="noiseAnimate"
+                    attributeName="seed"
+                    from="0"
+                    to="100"
+                    dur="20s"
+                    repeatCount="indefinite"
+                  ></animate>
+                </feTurbulence>
 
-              <feDisplacementMap
-                in="SourceGraphic"
-                in2="turbulence"
-                scale="100"
-                xChannelSelector="G"
-                yChannelSelector="A"
-                result="displacementMap"
-              />
-            </filter>
+                <feDisplacementMap
+                  in="SourceGraphic"
+                  in2="turbulence"
+                  scale="100"
+                  xChannelSelector="G"
+                  yChannelSelector="A"
+                  result="displacementMap"
+                />
+              </filter>
+            </defs>
 
             <path
               filter="url(#turbulence)"
@@ -160,6 +158,7 @@
         </div>
       </div>
     </div>
+
     <div class="screen screen-2">
       <div class="wrapper">
         <div class="zipbag-container">
@@ -171,46 +170,8 @@
             class="zipbag-backdrop"
             preserveAspectRatio="none"
           >
-            <filter
-              id="turbulence-2"
-              x="-20%"
-              y="-20%"
-              width="140%"
-              height="140%"
-              filterUnits="objectBoundingBox"
-              primitiveUnits="userSpaceOnUse"
-              color-interpolation-filters="linearRGB"
-            >
-              <feTurbulence
-                type="fractalNoise"
-                baseFrequency="0.002 0.002"
-                numOctaves="1"
-                seed="1"
-                stitchTiles="stitch"
-                result="turbulence"
-              >
-                <animate
-                  id="noiseAnimate"
-                  attributeName="seed"
-                  from="0"
-                  to="100"
-                  dur="20s"
-                  repeatCount="indefinite"
-                ></animate>
-              </feTurbulence>
-
-              <feDisplacementMap
-                in="SourceGraphic"
-                in2="turbulence"
-                scale="100"
-                xChannelSelector="G"
-                yChannelSelector="A"
-                result="displacementMap"
-              />
-            </filter>
-
             <path
-              filter="url(#turbulence-2)"
+              filter="url(#turbulence)"
               d="M815 1104c-105 64-340 40-437 40-82 0-331 32-360-55-45-135 11-297 11-437 0-151-55-361-8-503 13-39 79-111 117-120 185-41 472-56 611 83 173 172 128 861 66 992z"
             />
           </svg>
@@ -323,6 +284,57 @@
         </div>
       </div>
     </div>
+
+    <div class="screen screen-3">
+      <div class="wrapper">
+        <div class="zipbag-container">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 965 1222"
+            class="zipbag-backdrop"
+            preserveAspectRatio="none"
+          >
+            <path
+              filter="url(#turbulence)"
+              d="M169 1222c-58-8-116 21-148-43-52-104 8-1055 48-1106 77-95 704-88 843-28 62 26 66 1074 26 1154-8 17-702 23-769 23z"
+            />
+          </svg>
+          <img class="js-zipbag zipbag" src="./img/zipbag.png" alt="" />
+        </div>
+        <h1 class="h1">So what's in it?</h1>
+        <ul class="ingredient-list">
+          <li class="ingredient-list-entry">
+            <h2 class="h2">Salmon + tuna</h2>
+            <p class="p">
+              Salmon is a great source of omega-3 fatty acids, wich supports the
+              immune system, may decrease inflammation in the long term.
+            </p>
+          </li>
+          <li class="ingredient-list-entry">
+            <h2 class="h2">Green peas</h2>
+            <p class="p">
+              These vitamins and minerals are good for your dog's vision, skin,
+              digestion, immune system, nerves, heart, and more.
+            </p>
+          </li>
+          <li class="ingredient-list-entry">
+            <h2 class="h2">Blueberries</h2>
+            <p class="p">
+              Blueberries are a great low-calorie treat for dogs. They also
+              contain antioxydants, fiber and vitamins C and K.
+            </p>
+          </li>
+          <li class="ingredient-list-entry">
+            <h2 class="h2">Sweat potato</h2>
+            <p class="p">
+              A safe, healthy, and natural treat for dogs, offering a range of
+              health benefits
+            </p>
+          </li>
+        </ul>
+      </div>
+    </div>
+
     <canvas id="js-canvas"></canvas>
     <script src="./js/index.js"></script>
   </body>
