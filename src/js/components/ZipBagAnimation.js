@@ -5,18 +5,16 @@ import {
   Object3D,
   Vector3,
   MathUtils,
-  ShaderMaterial,
   TextureLoader,
 } from "three";
 import { Flow } from "three/examples/jsm/modifiers/CurveModifier";
 import Tweakpane from "tweakpane";
 
+import ZipBag from "./ZipBag";
 import MotionLine from "./MotionLine";
 import Path from "./Path";
 import map from "../map";
 
-import vertexShader from "../../shaders/zipbag/vertex.vert";
-import fragmentShader from "../../shaders/zipbag/fragment.frag";
 import zipBagtexture from "../../img/zipbag.png";
 
 const DEBUG = false;
@@ -38,9 +36,8 @@ class CustomPlane extends Object3D {
 
     /*
     this.initMotionLine();
-    */
-
     this.initGUI();
+    */
 
     new TextureLoader().load(zipBagtexture, (texture) => {
       this.flow.object3D.material.uniforms.uTexture.value = texture;
@@ -48,49 +45,19 @@ class CustomPlane extends Object3D {
   }
 
   initZipBag() {
-    const DOMNode = document.querySelector(".js-zipbag");
-
-    // Compute zipbag dimensions based on its reference DOM node
-    const bbox = DOMNode.getBoundingClientRect();
-    this.zipBagWidth = bbox.width;
-    this.zipBagHeight = bbox.height;
-
-    const widthSegments = 1; // Visually looks good, feel free to change if needed
-    const heightSegments = 20; // Visually looks good, feel free to change if needed
-
-    const geometry = new PlaneGeometry(
-      this.zipBagWidth,
-      this.zipBagHeight,
-      widthSegments,
-      heightSegments
-    );
-
-    const material = new ShaderMaterial({
-      // wireframe: true,
-      transparent: true,
-      uniforms: {
-        uTexture: {
-          type: "t",
-          value: null,
-        },
-      },
-      vertexShader,
-      fragmentShader,
-    });
-
-    this.zipBagMesh = new Mesh(geometry, material);
+    this.zipbag = new ZipBag();
   }
 
   // @TODO UPDATE POINTS ON RESIZE
   initPath() {
     this.path = new Path({
-      yOff: this.zipBagHeight,
+      yOff: this.zipbag.height,
     });
     this.add(this.path);
   }
 
   initFlow() {
-    this.flow = new Flow(this.zipBagMesh);
+    this.flow = new Flow(this.zipbag.mesh);
     this.flow.updateCurve(0, this.path.curvePath);
 
     // The curve modifier will automaticaly apply a rotation to our mesh
@@ -115,7 +82,7 @@ class CustomPlane extends Object3D {
   setSpineOffset() {
     // Sets the default mesh offset alongside the spine
     // This ensure that when setting the pathOffset uniforms to 0, the mesh is displayed exactly at the begining of the spine.
-    this.flow.uniforms.spineOffset.value = this.zipBagHeight / 2;
+    this.flow.uniforms.spineOffset.value = this.zipbag.height / 2;
   }
 
   setMaxFlowOffset() {
@@ -125,7 +92,7 @@ class CustomPlane extends Object3D {
     // We use toFixed to "round" the decimals just a tiny bit. Otherwise, the mesh will still wrap back to the spine starting point.
     this.maxFlowOffset = (
       1 -
-      this.zipBagHeight / this.flow.uniforms.spineLength.value
+      this.zipbag.height / this.flow.uniforms.spineLength.value
     ).toFixed(2);
   }
 
@@ -139,8 +106,8 @@ class CustomPlane extends Object3D {
 
     if (DEBUG) {
       const geometry = new PlaneGeometry(
-        this.zipBagWidth,
-        this.zipBagHeight,
+        this.zipbag.width,
+        this.zipbag.height,
         10,
         10
       );
@@ -162,7 +129,7 @@ class CustomPlane extends Object3D {
     const length = this.path.curvePath
       .getCurveLengths()
       .reduce((previousValue, currentValue) => previousValue + currentValue);
-    this.normalizedZipBagHelperOffset = this.zipBagHeight / length;
+    this.normalizedZipBagHelperOffset = this.zipbag.height / length;
 
     this.zipBagHelperAxis = new Vector3(0, 1, 0);
   }
