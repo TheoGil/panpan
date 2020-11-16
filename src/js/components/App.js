@@ -85,7 +85,7 @@ class App {
 
     this.updateZipBagPosition();
 
-    this.zipBagAnimation.updateZipBagHelper(scrollAmount);
+    this.zipBagAnimation.helper.update(scrollAmount);
 
     this.zipBagAnimation.updateAlphaTransition(scrollAmount);
 

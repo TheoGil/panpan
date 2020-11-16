@@ -1,23 +1,14 @@
-import {
-  PlaneGeometry,
-  Mesh,
-  MeshBasicMaterial,
-  Object3D,
-  Vector3,
-  MathUtils,
-  TextureLoader,
-} from "three";
+import { Object3D, MathUtils, TextureLoader } from "three";
 import { Flow } from "three/examples/jsm/modifiers/CurveModifier";
 import Tweakpane from "tweakpane";
 
 import ZipBag from "./ZipBag";
+import ZipBagHelper from "./ZipBagHelper";
 import MotionLine from "./MotionLine";
 import Path from "./Path";
 import map from "../map";
 
 import zipBagtexture from "../../img/zipbag.png";
-
-const DEBUG = false;
 
 const PARAMS = {
   offset: 0,
@@ -73,20 +64,10 @@ class CustomPlane extends Object3D {
     // original (before curve modification is applid) mesh vertices
     this.flow.object3D.frustumCulled = false;
 
-    this.setSpineOffset();
-
-    this.setMaxFlowOffset();
-
-    this.add(this.flow.object3D);
-  }
-
-  setSpineOffset() {
     // Sets the default mesh offset alongside the spine
     // This ensure that when setting the pathOffset uniforms to 0, the mesh is displayed exactly at the begining of the spine.
     this.flow.uniforms.spineOffset.value = this.zipbag.height / 2;
-  }
 
-  setMaxFlowOffset() {
     // If the pathOffset uniform goes beyond this value,
     // The mesh will be strech from the end of the spine to the beginning of the spine.
     // Setting the pathOffset uniforms to this.maxFlowOffset will display the mesh exactly at the end of the spine.
@@ -95,6 +76,8 @@ class CustomPlane extends Object3D {
       1 -
       this.zipbag.height / this.flow.uniforms.spineLength.value
     ).toFixed(2);
+
+    this.add(this.flow.object3D);
   }
 
   initZipBagHelper() {
@@ -104,53 +87,12 @@ class CustomPlane extends Object3D {
     // cannot be retrieved in JS on the CPU.
     // We'll use this helper to get the position of the zipbag.
     // Why not just move the zipbag the same way we are moving the helper ? Because the vertex shader, in addition to moving the mesh along the curve also displace it along the curve.
-
-    if (DEBUG) {
-      const geometry = new PlaneGeometry(
-        this.zipbag.width,
-        this.zipbag.height,
-        10,
-        10
-      );
-
-      const material = new MeshBasicMaterial({
-        color: 0xff0000,
-        wireframe: true,
-      });
-
-      this.zipBagHelper = new Mesh(geometry, material);
-    } else {
-      this.zipBagHelper = new Object3D();
-    }
-
-    this.add(this.zipBagHelper);
-
-    // Compute the offset amount for the follower to be positioned right on the center of the zipbag
-    // Remember: the zipbag origin is [.5, 0] but the follower is [.5, .5]
-    const length = this.path.curvePath
-      .getCurveLengths()
-      .reduce((previousValue, currentValue) => previousValue + currentValue);
-    this.normalizedZipBagHelperOffset = this.zipbag.height / length;
-
-    this.zipBagHelperAxis = new Vector3(0, 1, 0);
-  }
-
-  updateZipBagHelper(amount) {
-    const t = map(
-      amount,
-      0,
-      1,
-      this.normalizedZipBagHelperOffset,
-      1 - this.normalizedZipBagHelperOffset
-    );
-
-    const newPos = this.path.curvePath.getPoint(t);
-    this.zipBagHelper.position.set(newPos.x, newPos.y, newPos.z);
-
-    // Compute rotation based on the curve angle at position t
-    const tangent = this.path.curvePath.getTangent(t);
-    const rotation = Math.acos(this.zipBagHelperAxis.dot(tangent));
-    this.zipBagHelper.rotation.z = rotation;
+    this.helper = new ZipBagHelper({
+      width: this.zipbag.width,
+      height: this.zipbag.height,
+      path: this.path.curvePath,
+    });
+    this.add(this.helper);
   }
 
   updateAlphaTransition(scrollAmount) {
