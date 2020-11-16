@@ -21,6 +21,7 @@ const DEBUG = false;
 
 const PARAMS = {
   offset: 0,
+  alphaTransition: 0,
 };
 
 class CustomPlane extends Object3D {
@@ -152,6 +153,39 @@ class CustomPlane extends Object3D {
     this.zipBagHelper.rotation.z = rotation;
   }
 
+  updateAlphaTransition(scrollAmount) {
+    let alphaTransitionProgress = 0;
+
+    // We only update the animation progress when in the [0.5, 1.0] scroll range. this corresponds to the
+    // interval between the second and third screen.
+    // Outside of this range, we'll assume an alphaTransitionProgress of 0.
+    const scrollRange = [0.5, 1];
+
+    // Since we are staggering the animation of the stripes in the fragment shader,
+    // when getting to a transitionProgress of 1, the first stripes might have reach their
+    // desired width but not the last ones. Thats why we are increasing the range of the transition progress.
+    // this value have been defined arbitrary by tweaking manually.
+    const transitionRange = [0, 1.35];
+
+    if (scrollAmount > scrollRange[0]) {
+      alphaTransitionProgress = map(
+        scrollAmount,
+        scrollRange[0],
+        scrollRange[1],
+        transitionRange[0],
+        transitionRange[1]
+      );
+
+      // Apply and inCubic easing to the transition progress.
+      alphaTransitionProgress =
+        alphaTransitionProgress *
+        alphaTransitionProgress *
+        alphaTransitionProgress;
+    }
+
+    this.flow.object3D.material.uniforms.uTransitionProgress.value = alphaTransitionProgress;
+  }
+
   initGUI() {
     this.gui = new Tweakpane();
     this.gui
@@ -162,6 +196,16 @@ class CustomPlane extends Object3D {
       })
       .on("change", (value) => {
         this.flow.uniforms.pathOffset.value = value;
+      });
+
+    this.gui
+      .addInput(PARAMS, "alphaTransition", {
+        min: 0,
+        max: 1.3,
+        step: 0.001,
+      })
+      .on("change", (progress) => {
+        this.flow.object3D.material.uniforms.uTransitionProgress.value = progress;
       });
   }
 

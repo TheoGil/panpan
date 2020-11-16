@@ -84,11 +84,11 @@ class App {
     const scrollAmount = window.scrollY / this.scrollableHeight;
 
     this.updateZipBagPosition();
+
     this.zipBagAnimation.updateZipBagHelper(scrollAmount);
 
-    /*this.updateFoodPosition();
-    this.updateZipBagMotionLines();
-    */
+    this.zipBagAnimation.updateAlphaTransition(scrollAmount);
+
     this.updateCameraPosition();
   }
 

@@ -1,4 +1,10 @@
-import { Mesh, Object3D, PlaneBufferGeometry, ShaderMaterial } from "three";
+import {
+  Mesh,
+  Object3D,
+  PlaneBufferGeometry,
+  ShaderMaterial,
+  VideoTexture,
+} from "three";
 
 import vertexShader from "../../shaders/zipbag/vertex.vert";
 import fragmentShader from "../../shaders/zipbag/fragment.frag";
@@ -6,10 +12,10 @@ import fragmentShader from "../../shaders/zipbag/fragment.frag";
 class ZipBag extends Object3D {
   constructor() {
     super();
-    this.init();
+    this.initMesh();
   }
 
-  init() {
+  initMesh() {
     const DOMNode = document.querySelector(".js-zipbag");
 
     // Compute zipbag dimensions based on its reference DOM node
@@ -34,6 +40,9 @@ class ZipBag extends Object3D {
         uTexture: {
           type: "t",
           value: null,
+        },
+        uTransitionProgress: {
+          value: 0,
         },
       },
       vertexShader,
