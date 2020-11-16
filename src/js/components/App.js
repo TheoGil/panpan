@@ -89,6 +89,8 @@ class App {
 
     this.zipBagAnimation.updateAlphaTransition(scrollAmount);
 
+    this.zipBagAnimation.ingredients.update(scrollAmount);
+
     this.updateCameraPosition();
   }
 

@@ -9,6 +9,7 @@ import Path from "./Path";
 import map from "../map";
 
 import zipBagtexture from "../../img/zipbag.png";
+import Ingredients from "./Ingredients";
 
 const PARAMS = {
   offset: 0,
@@ -25,6 +26,7 @@ class CustomPlane extends Object3D {
     this.initPath();
     this.initFlow();
     this.initZipBagHelper();
+    this.initIngredients();
 
     /*
     this.initMotionLine();
@@ -93,6 +95,11 @@ class CustomPlane extends Object3D {
       path: this.path.curvePath,
     });
     this.add(this.helper);
+  }
+
+  initIngredients() {
+    this.ingredients = new Ingredients();
+    this.helper.add(this.ingredients);
   }
 
   updateAlphaTransition(scrollAmount) {
