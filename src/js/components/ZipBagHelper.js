@@ -41,7 +41,7 @@ class ZipBagHelper extends Object3D {
     this.normalizedZipBagHelperOffset = this.height / this.path.getLength() / 2; // @TODO UPDATE ON RESIZE
 
     // Will be used to compute orientation
-    this.up = new Vector3(0, 1, 0);
+    this.up = new Vector3(0, -1, 0);
     this.axis = new Vector3();
 
     this.update(0);
@@ -61,10 +61,10 @@ class ZipBagHelper extends Object3D {
     const tangent = this.path.getTangentAt(newT).normalize();
     this.axis.crossVectors(this.up, tangent).normalize();
     const radians = Math.acos(this.up.dot(tangent));
-    this.mesh.quaternion.setFromAxisAngle(this.axis, radians);
+    this.quaternion.setFromAxisAngle(this.axis, radians);
 
     // Set new position
-    this.mesh.position.copy(this.path.getPointAt(newT));
+    this.position.copy(this.path.getPointAt(newT));
   }
 }
 
