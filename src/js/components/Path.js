@@ -132,29 +132,6 @@ class Path extends Object3D {
       line.position.z = 1;
       this.add(line);
     }
-
-    /*
-    const c1 = new LineCurve3(
-        this.screens[0].zipBagTop,
-        this.screens[0].zipBagBottom
-      );
-  
-      const c2 = new CubicBezierCurve3(
-        this.screens[0].zipBagBottom,
-        this.screens[0].bezierHandle,
-        this.screens[1].bezierHandle,
-        this.screens[1].zipBagTop
-      );
-  
-      const c3 = new LineCurve3(
-        this.screens[1].zipBagTop,
-        this.screens[1].zipBagBottom
-      );
-  
-      this.curvePath = new CurvePath();
-      this.curvePath.curves = [c1, c2, c3];
-
-      */
   }
 
   init() {
@@ -197,7 +174,7 @@ class Path extends Object3D {
         ); // Center
         this.displayDebugPoint(zipBagTop, 0x0000ff);
         this.displayDebugPoint(zipBagBottom, 0x0000ff);
-        // this.displayDebugPoint(bezierHandle, 0x00ff00);
+        this.displayDebugPoint(bezierHandle, 0x00ff00);
       }
 
       this.screens.push({ zipBagTop, zipBagBottom, bezierHandle });
