@@ -102,6 +102,11 @@ class MotionLine extends Object3D {
 
     this.mesh.material.uniforms.dashOffset.value = offset;
   }
+
+  dispose() {
+    this.mesh.material.dispose();
+    this.mesh.geometry.dispose();
+  }
 }
 
 export default MotionLine;

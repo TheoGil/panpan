@@ -86,6 +86,13 @@ class Ingredients extends Object3D {
       }
     }
   }
+
+  dispose() {
+    for (let i = 0; i < this.meshes.length; i++) {
+      this.meshes[i].material.dipose();
+      this.meshes[i].geometry.dipose();
+    }
+  }
 }
 
 export default Ingredients;

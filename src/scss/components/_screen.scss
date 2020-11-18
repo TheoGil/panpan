@@ -27,6 +27,7 @@
 
     @include bp($medium) {
       width: auto;
+      max-width: 250px;
     }
   }
 

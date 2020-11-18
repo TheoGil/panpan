@@ -12,24 +12,21 @@ class App {
 
     this.onResize = this.onResize.bind(this);
     this.onScroll = this.onScroll.bind(this);
-    // this.debounceResize = debounce(200, this.debounceResize.bind(this));
     this.render = this.render.bind(this);
 
-    // @TODO UPDATE ON RESIZE
-    this.scrollableHeight = document.body.scrollHeight - window.innerHeight;
+    this.setScrollableHeight();
 
     this.initScene();
     this.initRenderer();
     this.initCamera();
     this.setRendererSize();
     this.addObjects();
+    this.render();
+
+    this.onScroll();
 
     document.addEventListener("scroll", this.onScroll);
-
-    this.render();
-    /*
-    window.addEventListener("resize", debounce(200, this.onResize));
-    */
+    window.addEventListener("resize", this.onResize);
   }
 
   initScene() {
@@ -74,25 +71,19 @@ class App {
     this.camera.updateProjectionMatrix();
   }
 
+  setScrollableHeight() {
+    this.scrollableHeight = document.body.scrollHeight - window.innerHeight;
+  }
+
   onResize() {
     this.setCameraFrustrum();
     this.setRendererSize();
-    this.zipBagAnimation.updateCurve();
+    this.setScrollableHeight();
+    this.reset();
   }
 
   onScroll() {
-    const scrollAmount = window.scrollY / this.scrollableHeight;
-
-    this.updateZipBagPosition();
-
-    this.zipBagAnimation.helper.update(scrollAmount);
-
-    this.zipBagAnimation.updateAlphaTransition(scrollAmount);
-
-    this.zipBagAnimation.ingredients.update(scrollAmount);
-
-    this.zipBagAnimation.motionLine.update(scrollAmount);
-
+    this.zipBagAnimation.onScroll(window.scrollY / this.scrollableHeight);
     this.updateCameraPosition();
   }
 
@@ -113,16 +104,6 @@ class App {
       this.scrollableHeight,
       0,
       cameraPositionYMax
-    );
-  }
-
-  updateZipBagPosition() {
-    this.zipBagAnimation.flow.uniforms.pathOffset.value = map(
-      window.scrollY,
-      0,
-      this.scrollableHeight,
-      0,
-      this.zipBagAnimation.maxFlowOffset
     );
   }
 
@@ -147,6 +128,20 @@ class App {
   }
 
   addObjects() {
+    this.zipBagAnimation = new ZipBagAnimation({
+      camera: this.camera,
+    });
+    this.scene.add(this.zipBagAnimation);
+  }
+
+  // Disclaimer:
+  // This is not the ideal approach as it implies a lot of computation to instanciate
+  // materials, geomtries (etc.) and could easely lead to memory issues.
+  // A more opimized solution would be to update exisiting stuff instead of destroying and re-instanciating them.
+  // I'm using settling for this because it is easier to implement and this project is only an experimentation "for fun".
+  // This solution should not be used in a production project.
+  reset() {
+    this.scene.remove(this.zipBagAnimation);
     this.zipBagAnimation = new ZipBagAnimation({
       camera: this.camera,
     });

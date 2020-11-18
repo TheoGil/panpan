@@ -1,10 +1,4 @@
-import {
-  Mesh,
-  Object3D,
-  PlaneBufferGeometry,
-  ShaderMaterial,
-  VideoTexture,
-} from "three";
+import { Mesh, Object3D, PlaneBufferGeometry, ShaderMaterial } from "three";
 
 import vertexShader from "../../shaders/zipbag/vertex.vert";
 import fragmentShader from "../../shaders/zipbag/fragment.frag";
@@ -12,6 +6,7 @@ import fragmentShader from "../../shaders/zipbag/fragment.frag";
 class ZipBag extends Object3D {
   constructor() {
     super();
+
     this.initMesh();
   }
 
@@ -50,6 +45,11 @@ class ZipBag extends Object3D {
     });
 
     this.mesh = new Mesh(geometry, material);
+  }
+
+  dipose() {
+    this.mesh.geometry.dispose();
+    this.mesh.material.dispose();
   }
 }
 

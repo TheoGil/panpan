@@ -16,11 +16,13 @@ class Path extends Object3D {
   constructor(options) {
     super(options);
 
+    this.debugMeshes = [];
+    this.curvePath = new CurvePath();
+    this.screens = [];
+
     // The more the bezier handles are far away from the previous point, the less stiffer the curve will be
     // Setting it to the zipBag height is juuuust right *chef kiss* 👨‍🍳👌
     this.yOff = options.yOff;
-
-    this.screens = [];
 
     this.computePathPointsPerScreen();
     this.buildPath();
@@ -45,11 +47,11 @@ class Path extends Object3D {
       // Point located at the very top of the zipbag, centered horizontaly -> [50%, 0%]
       screen.top = new Vector3(
         BCR.x + BCR.width / 2 - window.innerWidth / 2,
-        -(BCR.y - window.innerHeight / 2) - yOff,
+        -(BCR.y - window.innerHeight / 2) - yOff - window.scrollY,
         0
       );
       if (DEBUG) {
-        this.add(displayDebugPoint(screen.top));
+        this.debugPoint(screen.top);
       }
 
       // Point located at the center of the zipbag -> [50%, 50%]
@@ -61,13 +63,13 @@ class Path extends Object3D {
         0
       );
       if (DEBUG) {
-        this.add(displayDebugPoint(screen.center, 0x0000ff));
+        this.debugPoint(screen.center, 0x0000ff);
       }
 
       // Point located at the very bottom of the zipbag, centered horizontaly -> [50%, 100%]
       screen.bottom = new Vector3(screen.top.x, screen.top.y - BCR.height, 0);
       if (DEBUG) {
-        this.add(displayDebugPoint(screen.bottom));
+        this.debugPoint(screen.bottom);
       }
 
       // No need to compute handle1 for the first screen
@@ -78,7 +80,7 @@ class Path extends Object3D {
           0
         );
         if (DEBUG) {
-          this.add(displayDebugPoint(screen.handle1, 0x00ff00));
+          this.debugPoint(screen.handle1, 0x00ff00);
         }
       }
 
@@ -90,7 +92,7 @@ class Path extends Object3D {
           0
         );
         if (DEBUG) {
-          this.add(displayDebugPoint(screen.handle2, 0x00ff00));
+          this.debugPoint(screen.handle2, 0x00ff00);
         }
       }
 
@@ -121,7 +123,6 @@ class Path extends Object3D {
       }
     });
 
-    this.curvePath = new CurvePath();
     this.curvePath.curves = curves;
 
     if (DEBUG) {
@@ -130,85 +131,24 @@ class Path extends Object3D {
         new LineBasicMaterial({ color: 0x000000 })
       );
       line.position.z = 1;
+      this.debugMeshes.push(line);
       this.add(line);
     }
   }
 
-  init() {
-    this.screens = [];
+  debugPoint(point, color) {
+    const debug = displayDebugPoint(point, color);
+    this.debugMeshes.push(debug);
+    this.add(debug);
+  }
 
-    this.bezierHandlesOffset = this.zipBagHeight;
-
-    const zipBagPositions = document.querySelectorAll(".js-zipbag");
-    zipBagPositions.forEach((el, i) => {
-      const bbox = el.getBoundingClientRect();
-
-      const verticalOffset = i * this.bezierHandlesOffset;
-
-      const zipBagTop = new Vector3(
-        bbox.x + bbox.width / 2 - window.innerWidth / 2,
-        -(bbox.y - window.innerHeight / 2) - verticalOffset,
-        0
-      );
-
-      const zipBagBottom = new Vector3(
-        zipBagTop.x,
-        zipBagTop.y - bbox.height,
-        0
-      );
-
-      // The bezier handle position computation change a bit based on wether we are on a even on
-      let bezierHandle = new Vector3(zipBagTop.x, 0, 0);
-
-      const screenIndexIsEven = i % 2 === 0;
-      if (screenIndexIsEven) {
-        bezierHandle.y = zipBagBottom.y - this.bezierHandlesOffset;
-      } else {
-        bezierHandle.y = zipBagTop.y + this.bezierHandlesOffset;
-      }
-
-      if (DEBUG) {
-        this.displayDebugPoint(
-          new Vector3(zipBagTop.x, zipBagTop.y - bbox.height / 2, 1),
-          0xff0000
-        ); // Center
-        this.displayDebugPoint(zipBagTop, 0x0000ff);
-        this.displayDebugPoint(zipBagBottom, 0x0000ff);
-        this.displayDebugPoint(bezierHandle, 0x00ff00);
-      }
-
-      this.screens.push({ zipBagTop, zipBagBottom, bezierHandle });
-    });
-
-    const c1 = new LineCurve3(
-      this.screens[0].zipBagTop,
-      this.screens[0].zipBagBottom
-    );
-
-    const c2 = new CubicBezierCurve3(
-      this.screens[0].zipBagBottom,
-      this.screens[0].bezierHandle,
-      this.screens[1].bezierHandle,
-      this.screens[1].zipBagTop
-    );
-
-    const c3 = new LineCurve3(
-      this.screens[1].zipBagTop,
-      this.screens[1].zipBagBottom
-    );
-
-    this.curvePath = new CurvePath();
-    this.curvePath.curves = [c1, c2, c3];
-
+  dispose() {
     if (DEBUG) {
-      const points = this.curvePath.getPoints(50);
-      const line = new Line(
-        new BufferGeometry().setFromPoints(points),
-        new LineBasicMaterial({ color: 0x0000ff })
-      );
-      line.position.z = 1;
-      this.add(line);
-      this.debugMeshes.push(line);
+      this.debugMeshes.forEach((mesh) => {
+        mesh.geometry.dispose();
+        mesh.material.dispose();
+        this.remove(mesh);
+      });
     }
   }
 }

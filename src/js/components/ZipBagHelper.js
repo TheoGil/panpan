@@ -13,8 +13,8 @@ class ZipBagHelper extends Object3D {
   constructor(options) {
     super(options);
 
-    this.height = options.height; // @TODO UPDATE ON RESIZE
-    this.width = options.width; // @TODO UPDATE ON RESIZE
+    this.height = options.height;
+    this.width = options.width;
     this.path = options.path;
 
     this.init();
@@ -44,7 +44,9 @@ class ZipBagHelper extends Object3D {
     this.up = new Vector3(0, -1, 0);
     this.axis = new Vector3();
 
-    this.update(0);
+    this.update(
+      window.scrollY / (document.body.scrollHeight - window.innerHeight)
+    );
   }
 
   update(t) {
@@ -65,6 +67,11 @@ class ZipBagHelper extends Object3D {
 
     // Set new position
     this.position.copy(this.path.getPointAt(newT));
+  }
+
+  dipose() {
+    this.mesh.material.dispose();
+    this.mesh.geometry.dispose();
   }
 }
 
