@@ -52,6 +52,18 @@ class Path extends Object3D {
         this.add(displayDebugPoint(screen.top));
       }
 
+      // Point located at the center of the zipbag -> [50%, 50%]
+      // We don't need this point to build the actual path that will be used by the curve modifier
+      // but we'll use it as a reference when building the motionlines later on.
+      screen.center = new Vector3(
+        screen.top.x,
+        screen.top.y - BCR.height / 2,
+        0
+      );
+      if (DEBUG) {
+        this.add(displayDebugPoint(screen.center, 0x0000ff));
+      }
+
       // Point located at the very bottom of the zipbag, centered horizontaly -> [50%, 100%]
       screen.bottom = new Vector3(screen.top.x, screen.top.y - BCR.height, 0);
       if (DEBUG) {

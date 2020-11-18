@@ -91,6 +91,8 @@ class App {
 
     this.zipBagAnimation.ingredients.update(scrollAmount);
 
+    this.zipBagAnimation.motionLine.update(scrollAmount);
+
     this.updateCameraPosition();
   }
 

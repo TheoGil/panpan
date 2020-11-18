@@ -25,11 +25,11 @@ class CustomPlane extends Object3D {
     this.initZipBag();
     this.initPath();
     this.initFlow();
+    this.initMotionLine();
     this.initZipBagHelper();
     this.initIngredients();
 
     /*
-    this.initMotionLine();
     this.initGUI();
     */
 
@@ -160,8 +160,9 @@ class CustomPlane extends Object3D {
 
   initMotionLine() {
     this.motionLine = new MotionLine({
-      screens: this.screens,
-      bezierHandlesOffset: this.bezierHandlesOffset,
+      zipbagWidth: this.zipbag.width,
+      zipbagHeight: this.zipbag.height,
+      screens: this.path.screens,
     });
     this.add(this.motionLine);
   }
