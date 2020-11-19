@@ -1,23 +1,30 @@
-import { Object3D, MathUtils, TextureLoader } from "three";
+import { Object3D, TextureLoader } from "three";
+import lerp from "lerp";
+
 import Tweakpane from "tweakpane";
 import ZipBag from "./ZipBag";
 import ZipBagHelper from "./ZipBagHelper";
 import MotionLine from "./MotionLine";
 import Flow from "./Flow";
 import Path from "./Path";
+import Ingredients from "./Ingredients";
 
 import zipBagtexture from "../../img/zipbag_photo_x4.png";
-import Ingredients from "./Ingredients";
 
 const PARAMS = {
   offset: 0,
   alphaTransition: 0,
 };
+const LERP_TRESHOLD = 0.001;
+const LERP_FACTOR = 0.2;
 
 class ZipBagAnimation extends Object3D {
   constructor() {
     super();
 
+    this.needsUpdate = false;
+    this.scrollAmountTarget = 0;
+    this.scrollAmount = 0;
     this.debugMeshes = [];
 
     this.initZipBag();
@@ -109,10 +116,30 @@ class ZipBagAnimation extends Object3D {
   }
 
   onScroll(scrollAmount) {
-    this.flow.update(scrollAmount);
-    this.helper.update(scrollAmount);
-    this.ingredients.update(scrollAmount);
-    this.motionLine.update(scrollAmount);
+    this.scrollAmountTarget = scrollAmount;
+    this.needsUpdate = true;
+  }
+
+  update() {
+    if (this.needsUpdate) {
+      if (
+        Math.abs(this.scrollAmountTarget - this.scrollAmount) > LERP_TRESHOLD
+      ) {
+        this.scrollAmount = lerp(
+          this.scrollAmount,
+          this.scrollAmountTarget,
+          LERP_FACTOR
+        );
+      } else {
+        this.scrollAmount = this.scrollAmountTarget;
+        this.needsUpdate = false;
+      }
+
+      this.flow.update(this.scrollAmount);
+      this.helper.update(this.scrollAmount);
+      this.ingredients.update(this.scrollAmount);
+      this.motionLine.update(this.scrollAmount);
+    }
   }
 
   dispose() {

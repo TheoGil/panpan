@@ -127,6 +127,8 @@ class GL {
   render() {
     requestAnimationFrame(this.render);
 
+    this.zipBagAnimation.update();
+
     if (this.alive) {
       this.renderer.render(this.scene, this.camera);
     }
