@@ -1,0 +1,73 @@
+[data-a11y-dialog-native] > :first-child {
+  display: none;
+}
+
+.dialog-title {
+  font-size: 2.5rem;
+  margin: 0 0 20px 0;
+}
+
+.dialog-container {
+  .backdrop {
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.75);
+  }
+
+  &[aria-hidden="true"] {
+    display: none;
+  }
+
+  .close {
+    background-color: transparent;
+    border-width: 0;
+    position: absolute;
+    top: 5px;
+    right: 10px;
+    font-size: 2rem;
+    line-height: 1;
+    margin: 0;
+    padding: 0;
+  }
+}
+
+.dialog {
+  position: fixed;
+  bottom: 0;
+  z-index: 1;
+  background-color: white;
+  border-width: 1px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+
+  @include bp($medium) {
+    bottom: initial;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    max-width: 60%;
+    padding: 50px;
+  }
+
+  &[open] {
+    display: block;
+
+    &::backdrop {
+      background-color: red;
+    }
+  }
+
+  p {
+    &:first-of-type {
+      margin-top: 0;
+    }
+    &:last-of-type {
+      margin-bottom: 0;
+    }
+  }
+}
