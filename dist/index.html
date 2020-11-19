@@ -233,6 +233,7 @@
 
       <canvas id="js-canvas"></canvas>
     </div>
+
     <div class="dialog-container" id="my-accessible-dialog" aria-hidden="true">
       <div tabindex="-1" data-a11y-dialog-hide="" class="backdrop"></div>
       <dialog class="dialog" aria-labelledby="dialog-title">
@@ -261,6 +262,32 @@
         </p>
       </dialog>
     </div>
+
+    <svg xmlns="http://www.w3.org/2000/svg" class="frame-border top js-frame-top" viewbox="0 0 0 0" preserveAspectRatio="none">
+      <defs>
+        <filter id="frame-turbulence" x="-20%" y="-20%" width="140%" height="140%" filterUnits="objectBoundingBox" primitiveUnits="userSpaceOnUse" color-interpolation-filters="linearRGB">
+          <feTurbulence type="fractalNoise" baseFrequency="0.002 0.002" numOctaves="1" seed="1" stitchTiles="stitch" result="turbulence">
+            <animate id="noiseAnimate" attributeName="seed" from="0" to="100" dur="20s" repeatCount="indefinite"></animate>
+          </feTurbulence>
+
+          <feDisplacementMap in="SourceGraphic" in2="turbulence" scale="10" xChannelSelector="G" yChannelSelector="A" result="displacementMap"></feDisplacementMap>
+        </filter>
+      </defs>
+      <rect width="0" height="0" filter="url(#frame-turbulence)"></rect>
+    </svg>
+
+    <svg xmlns="http://www.w3.org/2000/svg" class="frame-border bottom js-frame-bottom" viewbox="0 0 0 0" preserveAspectRatio="none">
+      <rect width="0" height="0" filter="url(#frame-turbulence)"></rect>
+    </svg>
+
+    <svg xmlns="http://www.w3.org/2000/svg" class="frame-border left js-frame-left" viewbox="0 0 0 0" preserveAspectRatio="none">
+      <rect width="0" height="0" filter="url(#frame-turbulence)"></rect>
+    </svg>
+
+    <svg xmlns="http://www.w3.org/2000/svg" class="frame-border right js-frame-right" viewbox="0 0 0 0" preserveAspectRatio="none">
+      <rect width="0" height="0" filter="url(#frame-turbulence)"></rect>
+    </svg>
+
     <script src="/js.00a46daa.js"></script>
   </body>
 </html>

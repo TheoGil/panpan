@@ -12,8 +12,10 @@
 @import "./components/screens/screen2";
 @import "./components/screens/screen3";
 @import "./components/dialog";
+@import "./components/frame";
 
 body {
+  position: relative;
   margin: 0;
   font-family: $font-body;
   background-color: #fafbf8;

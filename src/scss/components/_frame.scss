@@ -1,0 +1,59 @@
+body {
+  --frame-stroke-weight: 5px;
+
+  @include bp($large) {
+    --frame-stroke-weight: 15px;
+  }
+}
+
+.frame-border {
+  position: fixed;
+  z-index: 1;
+  fill: none;
+  stroke: none;
+  animation: frame linear 5s infinite;
+
+  &.top {
+    top: -5px;
+    left: 0;
+    width: 100%;
+    height: var(--frame-stroke-weight);
+  }
+
+  &.left {
+    top: 0;
+    left: -5px;
+    width: var(--frame-stroke-weight);
+  }
+
+  &.right {
+    top: 0;
+    right: -5px;
+    width: var(--frame-stroke-weight);
+  }
+
+  &.bottom {
+    bottom: -5px;
+    left: 0;
+    width: 100%;
+    height: var(--frame-stroke-weight);
+  }
+}
+
+@keyframes frame {
+  0% {
+    fill: $color-peach;
+  }
+  25% {
+    fill: $color-lavender;
+  }
+  50% {
+    fill: $color-sky;
+  }
+  75% {
+    fill: $color-pistachio;
+  }
+  100% {
+    fill: $color-peach;
+  }
+}

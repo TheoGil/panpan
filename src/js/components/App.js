@@ -1,6 +1,7 @@
 import { debounce } from "throttle-debounce";
 import A11yDialog from "a11y-dialog";
 import GL from "./GL";
+import Frame from "./Frame";
 
 const BP = Number.parseInt(
   window.getComputedStyle(document.querySelector('meta[name="breakpoint"]'))
@@ -22,6 +23,8 @@ class App {
     } else {
       this.mobileDialog.show();
     }
+
+    this.frame = new Frame();
 
     window.addEventListener("resize", this.onResize);
   }
@@ -59,6 +62,8 @@ class App {
         }
       }
     }
+
+    this.frame.setDimensions();
   }
 }
 
