@@ -1,12 +1,14 @@
 .screen-3 {
-  // background-color: #eeccfe;
-
   .wrapper {
     position: relative;
     display: block;
-    // @TODO USE THE SAME PADDING AS THE TEXT CONTAINER
-    padding-left: 60px;
-    padding-right: 60px;
+    padding-left: $padding-column-text-x;
+    padding-right: $padding-column-text-x;
+
+    @include bp($large) {
+      padding-left: $padding-column-text-x-large;
+      padding-right: $padding-column-text-x-large;
+    }
   }
 
   .zipbag-container {
@@ -34,9 +36,13 @@
         content: "";
         position: absolute;
         top: 50%;
-        width: 100px;
+        width: 70px;
         height: 2px;
         background-color: black;
+
+        @include bp($large) {
+          width: 100px;
+        }
       }
     }
   }
@@ -52,9 +58,9 @@
 
     .ingredient-list-entry {
       width: 100%;
-      text-align: center;
 
       @include bp($medium) {
+        text-align: center;
         width: 30%;
       }
 
@@ -63,7 +69,11 @@
 
         .h2 {
           &::before {
-            left: 100%;
+            left: 80%;
+
+            @include bp($large) {
+              left: 100%;
+            }
           }
         }
       }
@@ -73,7 +83,11 @@
 
         .h2 {
           &::before {
-            right: 100%;
+            right: 80%;
+
+            @include bp($large) {
+              right: 100%;
+            }
           }
         }
       }

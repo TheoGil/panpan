@@ -47,7 +47,7 @@ class ZipBag extends Object3D {
     this.mesh = new Mesh(geometry, material);
   }
 
-  dipose() {
+  dispose() {
     this.mesh.geometry.dispose();
     this.mesh.material.dispose();
   }

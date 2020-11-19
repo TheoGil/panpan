@@ -91,7 +91,7 @@ class Flow extends Object3D {
     this.cm.object3D.material.uniforms.uTransitionProgress.value = alphaTransitionProgress;
   }
 
-  dipose() {
+  dispose() {
     this.cm.object3D.material.dispose();
     this.cm.object3D.geometry.dispose();
   }

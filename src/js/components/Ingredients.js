@@ -89,8 +89,9 @@ class Ingredients extends Object3D {
 
   dispose() {
     for (let i = 0; i < this.meshes.length; i++) {
-      this.meshes[i].material.dipose();
-      this.meshes[i].geometry.dipose();
+      this.meshes[i].material.map.dispose();
+      this.meshes[i].material.dispose();
+      this.meshes[i].geometry.dispose();
     }
   }
 }

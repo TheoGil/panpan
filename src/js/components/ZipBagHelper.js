@@ -69,9 +69,11 @@ class ZipBagHelper extends Object3D {
     this.position.copy(this.path.getPointAt(newT));
   }
 
-  dipose() {
-    this.mesh.material.dispose();
-    this.mesh.geometry.dispose();
+  dispose() {
+    if (DEBUG) {
+      this.mesh.material.dispose();
+      this.mesh.geometry.dispose();
+    }
   }
 }
 
