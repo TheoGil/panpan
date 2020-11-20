@@ -10,11 +10,8 @@ import Path from "./Path";
 import Ingredients from "./Ingredients";
 
 import zipBagtexture from "../../img/zipbag_photo_x4.png";
+import BackDrops from "./BackDrops";
 
-const PARAMS = {
-  offset: 0,
-  alphaTransition: 0,
-};
 const LERP_TRESHOLD = 0.001;
 const LERP_FACTOR = 0.2;
 
@@ -29,14 +26,13 @@ class ZipBagAnimation extends Object3D {
 
     this.initZipBag();
     this.initPath();
+    this.initBackDrops();
     this.initFlow();
     this.initMotionLine();
     this.initZipBagHelper();
     this.initIngredients();
 
-    /*
-    this.initGUI();
-    */
+    // this.initGUI();
 
     new TextureLoader().load(zipBagtexture, (texture) => {
       this.flow.cm.object3D.material.uniforms.uTexture.value = texture;
@@ -52,6 +48,13 @@ class ZipBagAnimation extends Object3D {
       yOff: this.zipbag.height,
     });
     this.add(this.path);
+  }
+
+  initBackDrops() {
+    this.backdrops = new BackDrops({
+      screens: this.path.screens,
+    });
+    this.add(this.backdrops);
   }
 
   initFlow() {
@@ -85,25 +88,17 @@ class ZipBagAnimation extends Object3D {
 
   initGUI() {
     this.gui = new Tweakpane();
-    this.gui
-      .addInput(PARAMS, "offset", {
-        min: 0,
-        max: this.maxFlowOffset,
-        step: 0.001,
-      })
-      .on("change", (value) => {
-        this.flow.uniforms.pathOffset.value = value;
-      });
 
-    this.gui
-      .addInput(PARAMS, "alphaTransition", {
+    this.gui.addInput(
+      this.backdrops.backdrops[0].mesh.material.uniforms.uColorMix,
+      "value",
+      {
+        label: "color",
         min: 0,
-        max: 1.3,
+        max: 1,
         step: 0.001,
-      })
-      .on("change", (progress) => {
-        this.flow.object3D.material.uniforms.uTransitionProgress.value = progress;
-      });
+      }
+    );
   }
 
   initMotionLine() {
@@ -140,6 +135,8 @@ class ZipBagAnimation extends Object3D {
       this.ingredients.update(this.scrollAmount);
       this.motionLine.update(this.scrollAmount);
     }
+
+    this.backdrops.update();
   }
 
   dispose() {

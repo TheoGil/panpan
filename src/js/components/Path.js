@@ -31,9 +31,8 @@ class Path extends Object3D {
   computePathPointsPerScreen() {
     const zipBagCollection = document.querySelectorAll(".js-zipbag");
     zipBagCollection.forEach((el, i) => {
-      const BCR = el.getBoundingClientRect();
-
       const screen = {};
+      screen.bbox = el.getBoundingClientRect();
 
       // In order to soften the stiffness of the bezier curves between screens,
       // we're offseting every point by a defined amount on the Y axis.
@@ -46,8 +45,8 @@ class Path extends Object3D {
 
       // Point located at the very top of the zipbag, centered horizontaly -> [50%, 0%]
       screen.top = new Vector3(
-        BCR.x + BCR.width / 2 - window.innerWidth / 2,
-        -(BCR.y - window.innerHeight / 2) - yOff - window.scrollY,
+        screen.bbox.x + screen.bbox.width / 2 - window.innerWidth / 2,
+        -(screen.bbox.y - window.innerHeight / 2) - yOff - window.scrollY,
         0
       );
       if (DEBUG) {
@@ -59,7 +58,7 @@ class Path extends Object3D {
       // but we'll use it as a reference when building the motionlines later on.
       screen.center = new Vector3(
         screen.top.x,
-        screen.top.y - BCR.height / 2,
+        screen.top.y - screen.bbox.height / 2,
         0
       );
       if (DEBUG) {
@@ -67,7 +66,11 @@ class Path extends Object3D {
       }
 
       // Point located at the very bottom of the zipbag, centered horizontaly -> [50%, 100%]
-      screen.bottom = new Vector3(screen.top.x, screen.top.y - BCR.height, 0);
+      screen.bottom = new Vector3(
+        screen.top.x,
+        screen.top.y - screen.bbox.height,
+        0
+      );
       if (DEBUG) {
         this.debugPoint(screen.bottom);
       }

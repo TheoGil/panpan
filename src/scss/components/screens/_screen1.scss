@@ -28,17 +28,6 @@
     }
   }
 
-  .zipbag-backdrop {
-    position: absolute;
-    height: 75%;
-    width: 50%;
-    z-index: -1;
-    top: 50%;
-    left: 50%;
-    transform: translate(-65%, -50%);
-    fill: $color-sky;
-  }
-
   .bubble-1 {
     position: absolute;
     z-index: -1;

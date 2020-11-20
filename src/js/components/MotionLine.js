@@ -84,6 +84,7 @@ class MotionLine extends Object3D {
       dashOffset: 1,
       dashArray: 1,
       dashRatio: 0.88,
+      transparent: true,
     });
     this.geometry = new MeshLine();
     this.geometry.setVertices(curve.getPoints(MESHLINE_VERTICES_COUNT));
