@@ -9,6 +9,7 @@ uniform float uBoxScale;
 uniform float uBoxRadius;
 uniform float uBoxSmoothness;
 uniform float uColorMix;
+uniform bool uInvert;
 
 vec3 color1 = vec3(1.000, 0.858, 0.811); // Peach
 vec3 color2 = vec3(0.941, 0.823, 1.000); // Lavender
@@ -36,6 +37,10 @@ void main() {
         uBoxRadius,
         uBoxSmoothness
     );
+
+    if (uInvert) {
+        alpha = 1. - alpha;
+    }
 
 	gl_FragColor = vec4(color, alpha);
 }

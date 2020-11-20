@@ -1,54 +1,89 @@
-const STROKE_WEIGHT = parseInt(
-  window
-    .getComputedStyle(document.body)
-    .getPropertyValue("--frame-stroke-weight")
-);
+import { Mesh, Object3D, PlaneBufferGeometry, ShaderMaterial } from "three";
 
-class Frame {
+import vertexShader from "../../shaders/backdrop/vertex.vert";
+import fragmentShader from "../../shaders/backdrop/fragment.frag";
+
+const COLOR_SKIMMING_SPEED = 0.005;
+
+class Frame extends Object3D {
   constructor() {
-    this.top = document.querySelector(".js-frame-top");
-    this.topRect = this.top.querySelector("rect");
+    super();
 
-    this.bottom = document.querySelector(".js-frame-bottom");
-    this.bottomRect = this.bottom.querySelector("rect");
+    this.frameCount = 0;
+    this.shouldUpdateBackdropsFrame = false;
 
-    this.left = document.querySelector(".js-frame-left");
-    this.leftRect = this.left.querySelector("rect");
+    this.material = new ShaderMaterial({
+      vertexShader,
+      fragmentShader,
+      transparent: true,
+      uniforms: {
+        uTime: {
+          value: 0,
+        },
+        uNoiseScale: {
+          value: 5,
+        },
+        uNoiseAmount: {
+          value: 0.0015,
+        },
+        uBoxScale: {
+          value: 0.49,
+        },
+        uBoxRadius: {
+          value: 0,
+        },
+        uBoxSmoothness: {
+          value: 0.001,
+        },
+        uColorMix: {
+          value: 0,
+        },
+        uInvert: {
+          value: true,
+        },
+      },
+    });
 
-    this.right = document.querySelector(".js-frame-right");
-    this.rightRect = this.right.querySelector("rect");
+    this.geometry = new PlaneBufferGeometry(
+      document.body.clientWidth, // Width should not include scrollbar!
+      window.innerHeight,
+      1,
+      1
+    );
 
-    this.setDimensions();
+    this.mesh = new Mesh(this.geometry, this.material);
+    this.mesh.position.set(
+      -(window.innerWidth - document.body.clientWidth) / 2,
+      0,
+      0
+    );
+
+    this.add(this.mesh);
   }
 
-  setDimensions() {
-    this.top.setAttribute(
-      "viewBox",
-      `0 0 ${window.innerWidth} ${STROKE_WEIGHT}`
-    );
-    this.topRect.setAttribute("width", window.innerWidth);
-    this.topRect.setAttribute("height", STROKE_WEIGHT);
+  update() {
+    this.frameCount += 1;
 
-    this.left.setAttribute(
-      "viewBox",
-      `0 0 ${STROKE_WEIGHT} ${window.innerHeight}`
-    );
-    this.leftRect.setAttribute("width", STROKE_WEIGHT);
-    this.leftRect.setAttribute("height", window.innerHeight);
+    if (this.frameCount > 25) {
+      this.shouldUpdateBackdropsFrame = true;
+      this.frameCount = 0;
+    }
 
-    this.right.setAttribute(
-      "viewBox",
-      `0 0 ${STROKE_WEIGHT} ${window.innerHeight}`
-    );
-    this.rightRect.setAttribute("width", STROKE_WEIGHT);
-    this.rightRect.setAttribute("height", window.innerHeight);
+    this.mesh.material.uniforms.uColorMix.value += COLOR_SKIMMING_SPEED;
+    if (this.mesh.material.uniforms.uColorMix.value > 1) {
+      this.mesh.material.uniforms.uColorMix.value = 0;
+    }
 
-    this.bottom.setAttribute(
-      "viewBox",
-      `0 0 ${window.innerWidth} ${STROKE_WEIGHT}`
-    );
-    this.bottomRect.setAttribute("width", window.innerWidth);
-    this.bottomRect.setAttribute("height", STROKE_WEIGHT);
+    // Update time
+    if (this.shouldUpdateBackdropsFrame) {
+      this.mesh.material.uniforms.uTime.value++;
+    }
+
+    this.shouldUpdateBackdropsFrame = false;
+  }
+
+  updatePosition(y) {
+    this.position.y = y;
   }
 }
 

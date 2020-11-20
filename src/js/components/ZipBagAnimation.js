@@ -8,9 +8,10 @@ import MotionLine from "./MotionLine";
 import Flow from "./Flow";
 import Path from "./Path";
 import Ingredients from "./Ingredients";
+import Frame from "./Frame";
+import BackDrops from "./BackDrops";
 
 import zipBagtexture from "../../img/zipbag_photo_x4.png";
-import BackDrops from "./BackDrops";
 
 const LERP_TRESHOLD = 0.001;
 const LERP_FACTOR = 0.2;
@@ -31,6 +32,7 @@ class ZipBagAnimation extends Object3D {
     this.initMotionLine();
     this.initZipBagHelper();
     this.initIngredients();
+    this.initFrame();
 
     // this.initGUI();
 
@@ -89,16 +91,33 @@ class ZipBagAnimation extends Object3D {
   initGUI() {
     this.gui = new Tweakpane();
 
-    this.gui.addInput(
-      this.backdrops.backdrops[0].mesh.material.uniforms.uColorMix,
-      "value",
-      {
-        label: "color",
-        min: 0,
-        max: 1,
-        step: 0.001,
-      }
-    );
+    this.gui.addInput(this.frame.mesh.material.uniforms.uNoiseScale, "value", {
+      label: "n scale",
+      min: 0,
+      max: 5,
+      step: 0.001,
+    });
+
+    this.gui.addInput(this.frame.mesh.material.uniforms.uNoiseAmount, "value", {
+      label: "n amount",
+      min: 0,
+      max: 0.05,
+      step: 0.001,
+    });
+
+    this.gui.addInput(this.frame.mesh.material.uniforms.uBoxScale, "value", {
+      label: "scale",
+      min: 0.4,
+      max: 0.5,
+      step: 0.001,
+    });
+
+    this.gui.addInput(this.frame.mesh.material.uniforms.uBoxRadius, "value", {
+      label: "radius",
+      min: 0,
+      max: 1,
+      step: 0.001,
+    });
   }
 
   initMotionLine() {
@@ -108,6 +127,11 @@ class ZipBagAnimation extends Object3D {
       screens: this.path.screens,
     });
     this.add(this.motionLine);
+  }
+
+  initFrame() {
+    this.frame = new Frame();
+    this.add(this.frame);
   }
 
   onScroll(scrollAmount) {
@@ -137,6 +161,7 @@ class ZipBagAnimation extends Object3D {
     }
 
     this.backdrops.update();
+    this.frame.update();
   }
 
   dispose() {

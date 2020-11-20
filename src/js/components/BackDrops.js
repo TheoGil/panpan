@@ -54,6 +54,9 @@ class BackDrop {
         uColorMix: {
           value: 0,
         },
+        uInvert: {
+          value: false,
+        },
       },
     });
 
