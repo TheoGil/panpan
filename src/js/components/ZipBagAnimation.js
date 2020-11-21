@@ -84,7 +84,10 @@ class ZipBagAnimation extends Object3D {
   }
 
   initIngredients() {
-    this.ingredients = new Ingredients();
+    this.ingredients = new Ingredients({
+      zipBagWidth: this.zipbag.width,
+      zipBagHeight: this.zipbag.height,
+    });
     this.helper.add(this.ingredients);
   }
 

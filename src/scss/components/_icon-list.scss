@@ -32,11 +32,21 @@
 
 .icon-list-entry-icon {
   width: 15%;
+  transform: translateY(7px);
+
+  @include bp($medium) {
+    transform: translateY(0);
+  }
 
   svg {
-    width: 35px;
-    height: 35px;
+    width: 15px;
+    height: 15px;
     fill: #e3d34e;
+
+    @include bp($medium) {
+      width: 35px;
+      height: 35px;
+    }
   }
 }
 
@@ -44,7 +54,12 @@
   width: 85%;
 
   p {
+    display: none;
     margin-top: 0;
+
+    @include bp($medium) {
+      display: block;
+    }
 
     &:last-of-type {
       margin-bottom: 0;

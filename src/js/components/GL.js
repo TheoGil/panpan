@@ -7,13 +7,11 @@ const DEBUG = false;
 
 class GL {
   constructor() {
-    this.alive = true;
     this.canvasEl = document.getElementById("js-canvas");
 
     this.onScroll = this.onScroll.bind(this);
     this.render = this.render.bind(this);
 
-    this.resurect(); // Will add the right CSS class to the canvas element
     this.setScrollableHeight();
     this.initScene();
     this.initRenderer();
@@ -130,19 +128,7 @@ class GL {
 
     this.zipBagAnimation.update();
 
-    if (this.alive) {
-      this.renderer.render(this.scene, this.camera);
-    }
-  }
-
-  resurect() {
-    this.alive = true;
-    this.canvasEl.classList.add("active");
-  }
-
-  kill() {
-    this.alive = false;
-    this.canvasEl.classList.remove("active");
+    this.renderer.render(this.scene, this.camera);
   }
 }
 

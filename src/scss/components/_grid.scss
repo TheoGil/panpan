@@ -4,8 +4,6 @@
   max-width: $wrapper-width;
   margin: auto;
   display: flex; // Distribute columns evenly within row
-  flex-direction: column;
-  height: 100%; // Makes sure row fills whole available space when using a column layout (small devices)
 
   @include bp($medium) {
     flex-direction: row;

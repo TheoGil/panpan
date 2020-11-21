@@ -1,21 +1,20 @@
 .screen-1 {
-  .wrapper {
-    @include bp($medium) {
-      flex-direction: row-reverse;
-    }
-  }
-
   .intro {
     display: flex;
     margin-bottom: 40px;
 
     &-hyphen {
+      display: none;
       box-sizing: border-box;
       width: 20%;
       padding: 0 20px;
       stroke-width: 3px;
       fill: none;
       stroke: currentColor;
+
+      @include bp($medium) {
+        display: none;
+      }
 
       @include bp(1350px) {
         width: 100px;

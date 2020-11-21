@@ -12,52 +12,48 @@ import blueberriesTexture from "../../img/ingredients/blueberries.png";
 import potatoTexture from "../../img/ingredients/sweetpotato.png";
 import map from "../map";
 
+// All the ingredient textures share the same dimensions
+const TEXTURE_WIDTH = 800;
+const TEXTURE_HEIGHT = 346;
+
 const INGREDIENTS = [
   {
     texture: salmonTexture,
-    width: 800,
-    height: 346,
-    y: 180,
+    y: 0.4,
   },
   {
     texture: peasTexture,
-    width: 800,
-    height: 253,
-    y: 60,
+    y: 0.125,
   },
   {
     texture: blueberriesTexture,
-    width: 800,
-    height: 346,
-    y: -50,
+    y: -0.125,
   },
   {
     texture: potatoTexture,
-    width: 800,
-    height: 346,
-    y: -160,
+    y: -0.4,
   },
 ];
 
 class Ingredients extends Object3D {
-  constructor() {
+  constructor(options) {
     super();
 
     this.loader = new TextureLoader();
     this.meshes = [];
-    this.maxScale = 0.3;
+    this.maxScale = options.zipBagWidth / TEXTURE_WIDTH;
     this.minScale = 0;
 
     INGREDIENTS.forEach((ingredient) => {
       const mesh = new Mesh(
-        new PlaneBufferGeometry(ingredient.width, ingredient.height, 1, 1),
+        new PlaneBufferGeometry(TEXTURE_WIDTH, TEXTURE_HEIGHT, 1, 1),
         new MeshBasicMaterial({
           map: this.loader.load(ingredient.texture),
           transparent: true,
         })
       );
 
-      mesh.position.y = ingredient.y;
+      mesh.position.y = ingredient.y * options.zipBagHeight;
       mesh.position.z = -1; // Ingredient should appear behind zipbag
       mesh.scale.set(0.3, 0.3, 1);
       mesh.material.opacity = 0;

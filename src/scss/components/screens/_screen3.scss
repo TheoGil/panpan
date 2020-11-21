@@ -12,12 +12,10 @@
   }
 
   .zipbag-container {
-    @include bp($medium) {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-    }
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
   }
 
   .h2 {
@@ -50,10 +48,15 @@
 
     .ingredient-list-entry {
       width: 100%;
+      text-align: center;
+      width: 30%;
 
-      @include bp($medium) {
-        text-align: center;
-        width: 30%;
+      .p {
+        display: none;
+
+        @include bp($medium) {
+          display: block;
+        }
       }
 
       &:nth-child(even) {

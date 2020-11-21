@@ -23,9 +23,9 @@
 
   .zipbag {
     width: 30vw;
+    opacity: 0;
 
     @include bp($medium) {
-      opacity: 0;
       width: auto;
       max-width: 250px;
     }

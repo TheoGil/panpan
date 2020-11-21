@@ -24,8 +24,12 @@ h1 {
 
 .h2 {
   margin: 0 0 10px 0;
-  font-size: 30px;
+  font-size: 25px;
   font-weight: 400; // normal
+
+  @include bp($medium) {
+    font-size: 30px;
+  }
 }
 
 .p {

@@ -1,12 +1,7 @@
 canvas {
-  display: none;
-  // opacity: 0.5; // DEBUG
+  display: block;
   pointer-events: none;
   position: fixed;
   top: 0;
   left: 0;
-
-  &.active {
-    display: block;
-  }
 }
