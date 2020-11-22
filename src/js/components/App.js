@@ -43,7 +43,6 @@ class App {
     // See the comment in styles.scss
     // Also → https://css-tricks.com/the-trick-to-viewport-units-on-mobile/
     let vh = window.innerHeight * 0.01;
-    console.log(`height: ${vh * 100}`);
     document.documentElement.style.setProperty("--vh", `${vh}px`);
   }
 }
