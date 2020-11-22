@@ -133,7 +133,14 @@ class ZipBagAnimation extends Object3D {
   }
 
   initFrame() {
-    this.frame = new Frame();
+    const screensCount = document.querySelectorAll(".js-zipbag").length;
+    const sceneHeight =
+      document.body.scrollHeight + this.path.yOff * (screensCount - 1);
+
+    this.frame = new Frame({
+      height: sceneHeight,
+      yPos: -(window.innerHeight + this.path.yOff),
+    });
     this.add(this.frame);
   }
 
@@ -174,6 +181,7 @@ class ZipBagAnimation extends Object3D {
     this.motionLine.dispose();
     this.helper.dispose();
     this.ingredients.dispose();
+    this.frame.dispose();
   }
 }
 

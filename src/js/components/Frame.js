@@ -1,13 +1,16 @@
 import { Mesh, Object3D, PlaneBufferGeometry, ShaderMaterial } from "three";
 
-import vertexShader from "../../shaders/backdrop/vertex.vert";
-import fragmentShader from "../../shaders/backdrop/fragment.frag";
+import vertexShader from "../../shaders/frame/vertex.vert";
+import fragmentShader from "../../shaders/frame/fragment.frag";
 
 const COLOR_SKIMMING_SPEED = 0.005;
 
+// @TODO
+// This class is very similar to the Backdrop class and pretty redundant.
+// Those two could easily be merged...
 class Frame extends Object3D {
-  constructor() {
-    super();
+  constructor(options) {
+    super(options);
 
     this.frameCount = 0;
     this.shouldUpdateBackdropsFrame = false;
@@ -26,35 +29,30 @@ class Frame extends Object3D {
         uNoiseAmount: {
           value: 0.0015,
         },
-        uBoxScale: {
-          value: 0.49,
-        },
-        uBoxRadius: {
-          value: 0,
-        },
-        uBoxSmoothness: {
-          value: 0.001,
-        },
         uColorMix: {
           value: 0,
         },
-        uInvert: {
-          value: true,
+        uBorderWidth: {
+          value: 0.01,
+        },
+        uAspect: {
+          value: options.height / document.body.clientWidth,
         },
       },
     });
 
     this.geometry = new PlaneBufferGeometry(
       document.body.clientWidth, // Width should not include scrollbar!
-      window.innerHeight,
+      options.height,
       1,
       1
     );
 
     this.mesh = new Mesh(this.geometry, this.material);
+
     this.mesh.position.set(
       -(window.innerWidth - document.body.clientWidth) / 2,
-      0,
+      options.yPos,
       0
     );
 
@@ -82,8 +80,10 @@ class Frame extends Object3D {
     this.shouldUpdateBackdropsFrame = false;
   }
 
-  updatePosition(y) {
-    this.position.y = y;
+  dispose() {
+    this.remove(this.mesh);
+    this.mesh.material.dispose();
+    this.mesh.geometry.dispose();
   }
 }
 

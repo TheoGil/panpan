@@ -74,7 +74,6 @@ class GL {
   onScroll() {
     this.zipBagAnimation.onScroll(window.scrollY / this.scrollableHeight);
     this.updateCameraPosition();
-    this.zipBagAnimation.frame.updatePosition(this.camera.position.y);
   }
 
   onResize() {
