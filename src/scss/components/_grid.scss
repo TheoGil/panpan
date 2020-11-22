@@ -1,6 +1,5 @@
 .wrapper {
   width: 100%;
-  height: 100%; // Makes sure wrapper fills whole available space when using a column layout (small devices)
   max-width: $wrapper-width;
   margin: auto;
   display: flex; // Distribute columns evenly within row
