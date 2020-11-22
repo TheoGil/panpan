@@ -3,9 +3,3 @@
     @content;
   }
 }
-
-// To access CSS values using JS, this technic is more cross browser proof
-// than using CSS variables
-meta[name="breakpoint"] {
-  font-size: $medium;
-}
