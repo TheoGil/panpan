@@ -60,6 +60,9 @@ class BackDrop {
       },
     });
 
+    this.scaleX = options.scaleX;
+    this.scaleY = options.scaleY;
+
     this.geometry = new PlaneBufferGeometry(
       options.bbox.width,
       options.bbox.height,
@@ -75,7 +78,7 @@ class BackDrop {
       -2
     );
 
-    this.mesh.scale.set(options.scaleX, options.scaleY, 1);
+    this.mesh.scale.set(0, 0, 1);
   }
 }
 

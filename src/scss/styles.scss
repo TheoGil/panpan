@@ -1,6 +1,7 @@
 @import "./abstract/variables";
 @import "./abstract/breakpoints";
 @import "./abstract/fonts";
+@import "./abstract/intro";
 @import "./components/grid";
 @import "./components/typography";
 @import "./components/spritesheet";
@@ -13,6 +14,7 @@
 @import "./components/screens/screen3";
 @import "./components/dialog";
 @import "./components/frame";
+@import "./components/info";
 
 :root {
   // This particular demo (scroll animations in general) might incite the user to scroll up and down

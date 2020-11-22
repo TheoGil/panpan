@@ -13,7 +13,9 @@
       stroke: currentColor;
 
       @include bp($medium) {
-        display: none;
+        display: block;
+        transform-origin: 0% 50%;
+        transform: scaleX(0);
       }
 
       @include bp(1350px) {
@@ -69,23 +71,45 @@
     }
   }
 
-  .doodle-1 {
+  .doodle-1-wrapper {
+    top: 60%;
+    width: 11%;
+    height: 11%;
+    left: 10%;
     position: absolute;
     z-index: -1;
-    top: 60%;
-    left: 10%;
     transform-origin: 50% 50%;
-    transform: rotate(-90deg);
-    width: 11%;
   }
 
-  .doodle-2 {
+  .doodle-1 {
+    width: 100%;
+    height: 100%;
+    animation: doodle-rotate 5s $doodles-easing infinite alternate;
+  }
+
+  .doodle-2-wrapper {
     position: absolute;
     z-index: -1;
     top: 10%;
     right: 10%;
-    transform-origin: 50% 50%;
     width: 11%;
-    // transform: rotate(-45deg);
+    height: 11%;
+    transform-origin: 50% 50%;
+  }
+
+  .doodle-2 {
+    width: 100%;
+    height: 100%;
+    animation: doodle-rotate 5s $doodles-easing infinite alternate-reverse;
+    animation-delay: 3s;
+  }
+}
+
+@keyframes doodle-rotate {
+  from {
+    transform: rotate(-90deg);
+  }
+  to {
+    transform: rotate(0deg);
   }
 }

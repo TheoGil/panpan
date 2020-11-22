@@ -38,15 +38,21 @@
     transform: translateY(0);
   }
 
-  svg {
+  .icon-wrapper {
     width: 15px;
     height: 15px;
-    fill: #e3d34e;
+    transform: scale(0);
 
     @include bp($medium) {
       width: 35px;
       height: 35px;
     }
+  }
+
+  svg {
+    fill: #e3d34e;
+    width: 100%;
+    height: 100%;
   }
 }
 

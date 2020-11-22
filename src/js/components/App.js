@@ -1,6 +1,7 @@
 import { debounce } from "throttle-debounce";
-import A11yDialog from "a11y-dialog";
 import GL from "./GL";
+import Intro from "./Intro";
+import Screens from "./Screens";
 
 const DEBOUNCE_AMOUNT = 200;
 const RESIZE_HEIGHT_THRESHOLD = 100;
@@ -15,6 +16,15 @@ class App {
     this.setVh();
     this.gl = new GL();
     this.onResize = debounce(DEBOUNCE_AMOUNT, this.onResize.bind(this));
+    this.intro = new Intro({
+      frame: this.gl.zipBagAnimation.frame.mesh,
+      backdrops: this.gl.zipBagAnimation.backdrops.backdrops,
+      flow: this.gl.zipBagAnimation.flow,
+    });
+
+    this.gl.zipBagAnimation.init().then(() => {
+      this.intro.animateIn();
+    });
 
     window.addEventListener("resize", this.onResize);
   }

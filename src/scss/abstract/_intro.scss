@@ -1,0 +1,9 @@
+.up {
+  opacity: 0;
+  transform: translateY($intro-y-distance);
+}
+
+.down {
+  opacity: 0;
+  transform: translateY(-$intro-y-distance);
+}

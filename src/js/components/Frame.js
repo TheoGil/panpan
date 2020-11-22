@@ -27,13 +27,13 @@ class Frame extends Object3D {
           value: 5,
         },
         uNoiseAmount: {
-          value: 0.0015,
+          value: 0,
         },
         uColorMix: {
           value: 0,
         },
         uBorderWidth: {
-          value: 0.01,
+          value: 0,
         },
         uAspect: {
           value: options.height / document.body.clientWidth,

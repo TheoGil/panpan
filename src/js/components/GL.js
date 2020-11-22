@@ -1,9 +1,6 @@
 import { Scene, OrthographicCamera, WebGLRenderer } from "three";
-import OrbitControls from "orbit-controls-es6";
 import map from "../map";
 import ZipBagAnimation from "./ZipBagAnimation";
-
-const DEBUG = false;
 
 class GL {
   constructor() {
@@ -39,11 +36,6 @@ class GL {
       1000
     );
     this.camera.position.z = 10;
-
-    if (DEBUG) {
-      const oc = new OrbitControls(this.camera, this.renderer.domElement);
-      oc.enableZoom = false;
-    }
   }
 
   initRenderer() {
@@ -105,7 +97,7 @@ class GL {
 
   addObjects() {
     this.zipBagAnimation = new ZipBagAnimation({
-      camera: this.camera,
+      whenReadyPromise: this.whenReadyPromise,
     });
     this.scene.add(this.zipBagAnimation);
   }

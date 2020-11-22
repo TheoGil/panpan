@@ -1,9 +1,46 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>PanPan - Dog Treats</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Primary Meta Tags -->
+    <title>PanPan Dog Treats — UI Experiment</title>
+    <meta name="title" content="PanPan Dog Treats — UI Experiment" />
+    <meta
+      name="description"
+      content="UI experimentation based a a Design by Daniel Tan"
+    />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://theogil.github.io/panpan/" />
+    <meta property="og:title" content="PanPan Dog Treats — UI Experiment" />
+    <meta
+      property="og:description"
+      content="UI experimentation based a a Design by Daniel Tan"
+    />
+    <meta
+      property="og:image"
+      content="https://metatags.io/assets/meta-tags-16a33a6a8531e519cc0936fbba0ad904e52d35f34a46c97a2c9f6f7dd7d336f2.png"
+    />
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="https://theogil.github.io/panpan/" />
+    <meta
+      property="twitter:title"
+      content="PanPan Dog Treats — UI Experiment"
+    />
+    <meta
+      property="twitter:description"
+      content="UI experimentation based a a Design by Daniel Tan"
+    />
+    <meta
+      property="twitter:image"
+      content="https://metatags.io/assets/meta-tags-16a33a6a8531e519cc0936fbba0ad904e52d35f34a46c97a2c9f6f7dd7d336f2.png"
+    />
+
     <link
       rel="icon"
       type="image/png"
@@ -61,9 +98,9 @@
     <div class="screen screen-1">
       <div class="wrapper">
         <div class="text-container">
-          <h1>The treat every good boy deserve</h1>
+          <h1 class="js-stagger up">The treat every good boy deserve</h1>
           <div class="intro">
-            <div class="intro-hyphen">
+            <div class="intro-hyphen js-stagger">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -72,12 +109,12 @@
                 <path d="M0 6c41 3 87-3 123-6" />
               </svg>
             </div>
-            <p class="intro-content p">
+            <p class="intro-content p js-stagger up">
               Create a joyful life for your dog through a custom plan of
               nutritious.
             </p>
           </div>
-          <button class="button">
+          <button class="button js-stagger up">
             Build your box
             <svg
               class="border"
@@ -102,7 +139,7 @@
           />
 
           <svg
-            class="bubble-1"
+            class="bubble-1 js-stagger down"
             viewBox="0 0 646 836"
             xmlns="http://www.w3.org/2000/svg"
             xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -121,7 +158,7 @@
           </svg>
 
           <svg
-            class="bubble-2"
+            class="bubble-2 js-stagger up"
             viewBox="0 0 766 547"
             xmlns="http://www.w3.org/2000/svg"
             xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -139,22 +176,27 @@
             </g>
           </svg>
 
-          <svg
-            class="doodle-1"
-            xmlns="http://www.w3.org/2000/svg"
-            xmlns="http://www.w3.org/2000/svg"
-            xmlns:xlink="http://www.w3.org/1999/xlink"
-          >
-            <use xlink:href="#bone"></use>
-          </svg>
-          <svg
-            class="doodle-2"
-            xmlns="http://www.w3.org/2000/svg"
-            xmlns="http://www.w3.org/2000/svg"
-            xmlns:xlink="http://www.w3.org/1999/xlink"
-          >
-            <use xlink:href="#bone"></use>
-          </svg>
+          <div class="doodle-1-wrapper js-stagger up">
+            <svg
+              class="doodle-1"
+              xmlns="http://www.w3.org/2000/svg"
+              xmlns="http://www.w3.org/2000/svg"
+              xmlns:xlink="http://www.w3.org/1999/xlink"
+            >
+              <use xlink:href="#bone"></use>
+            </svg>
+          </div>
+
+          <div class="doodle-2-wrapper js-stagger down">
+            <svg
+              class="doodle-2"
+              xmlns="http://www.w3.org/2000/svg"
+              xmlns="http://www.w3.org/2000/svg"
+              xmlns:xlink="http://www.w3.org/1999/xlink"
+            >
+              <use xlink:href="#bone"></use>
+            </svg>
+          </div>
         </div>
       </div>
     </div>
@@ -165,7 +207,7 @@
           <img class="js-zipbag zipbag" src="./img/food.png" alt="" />
 
           <svg
-            class="bubble-1"
+            class="bubble-1 js-stagger up"
             viewBox="0 0 1662 1543"
             xmlns="http://www.w3.org/2000/svg"
             xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -183,68 +225,74 @@
             </g>
           </svg>
 
-          <svg
-            class="doodle-1"
-            xmlns="http://www.w3.org/2000/svg"
-            xmlns:xlink="http://www.w3.org/1999/xlink"
-            viewBox="0 0 512 512"
-          >
-            <path
-              d="M465 15a10 10 0 00-9-15H56a10 10 0 00-9 14l25 57v370l-18 58a10 10 0 0010 13h379a10 10 0 009-13l-17-58V72l30-57zM77 492l12-39h329l12 39H77zm15-59V79h323v354H92zM419 59H88L71 20h369l-21 39z"
-            />
-            <path
-              d="M358 190c-7-7-16-11-26-11a38 38 0 00-65-26 38 38 0 00-6 45l-65 65a38 38 0 00-47 5 38 38 0 000 54c7 7 16 11 26 11a38 38 0 0065 26c11-12 14-29 7-43l65-66a38 38 0 0046-6 38 38 0 000-54zm-14 40a18 18 0 01-26 0c-4-4-10-4-14 0l-77 77c-3 4-4 9 0 13a18 18 0 01-14 30c-5 0-10-2-13-5-5-5-7-13-4-20a10 10 0 00-13-13 18 18 0 01-25-17 18 18 0 0118-18 18 18 0 0113 6 10 10 0 0015 1l77-77c4-4 4-10 0-14a18 18 0 0113-31c5 0 10 2 13 5 5 5 7 13 4 20a10 10 0 0013 13 18 18 0 0125 17c0 5-2 9-5 13z"
-            />
-            <path d="M295 398h-1a10 10 0 000 20h1a10 10 0 000-20z" />
-            <path d="M390 398h-66a10 10 0 000 20h66a10 10 0 000-20z" />
-            <path d="M183 94h-66a10 10 0 000 20h66a10 10 0 000-20z" />
-            <path d="M213 94h-1a10 10 0 000 20h1a10 10 0 000-20z" />
-          </svg>
+          <div class="doodle-1-wrapper js-stagger up">
+            <svg
+              class="doodle-1"
+              xmlns="http://www.w3.org/2000/svg"
+              xmlns:xlink="http://www.w3.org/1999/xlink"
+              viewBox="0 0 512 512"
+            >
+              <path
+                d="M465 15a10 10 0 00-9-15H56a10 10 0 00-9 14l25 57v370l-18 58a10 10 0 0010 13h379a10 10 0 009-13l-17-58V72l30-57zM77 492l12-39h329l12 39H77zm15-59V79h323v354H92zM419 59H88L71 20h369l-21 39z"
+              />
+              <path
+                d="M358 190c-7-7-16-11-26-11a38 38 0 00-65-26 38 38 0 00-6 45l-65 65a38 38 0 00-47 5 38 38 0 000 54c7 7 16 11 26 11a38 38 0 0065 26c11-12 14-29 7-43l65-66a38 38 0 0046-6 38 38 0 000-54zm-14 40a18 18 0 01-26 0c-4-4-10-4-14 0l-77 77c-3 4-4 9 0 13a18 18 0 01-14 30c-5 0-10-2-13-5-5-5-7-13-4-20a10 10 0 00-13-13 18 18 0 01-25-17 18 18 0 0118-18 18 18 0 0113 6 10 10 0 0015 1l77-77c4-4 4-10 0-14a18 18 0 0113-31c5 0 10 2 13 5 5 5 7 13 4 20a10 10 0 0013 13 18 18 0 0125 17c0 5-2 9-5 13z"
+              />
+              <path d="M295 398h-1a10 10 0 000 20h1a10 10 0 000-20z" />
+              <path d="M390 398h-66a10 10 0 000 20h66a10 10 0 000-20z" />
+              <path d="M183 94h-66a10 10 0 000 20h66a10 10 0 000-20z" />
+              <path d="M213 94h-1a10 10 0 000 20h1a10 10 0 000-20z" />
+            </svg>
+          </div>
 
-          <svg
-            class="doodle-2"
-            xmlns="http://www.w3.org/2000/svg"
-            xmlns:xlink="http://www.w3.org/1999/xlink"
-            viewBox="0 0 512 512"
-          >
-            <path
-              d="M488 368h-1l-15-113a8 8 0 00-8-7h-24a63 63 0 00-19-45 64 64 0 00-33-18 64 64 0 00-62-41 96 96 0 00-156 0 64 64 0 00-62 41 64 64 0 00-33 18 63 63 0 00-19 45h-8a8 8 0 00-8 7L25 368h-1a8 8 0 00-8 8v32a8 8 0 008 8h464a8 8 0 008-8v-32a8 8 0 00-8-8zM86 214a47 47 0 0129-14 8 8 0 007-5 48 48 0 0151-35 8 8 0 008-3 80 80 0 01134 0 8 8 0 008 3 48 48 0 0151 35 8 8 0 007 5 48 48 0 0143 48H72a48 48 0 0114-34zm-31 50h402l14 104H41zm425 136H32v-16h448z"
-            />
-            <path d="M448 315a8 8 0 00-16 2l4 28a8 8 0 1016-2z" />
-            <path
-              d="M437 296a8 8 0 007-9l-1-8a8 8 0 10-16 2l1 8a8 8 0 009 7z"
-            />
-            <path
-              d="M289 280a26 26 0 00-24 15h-19a26 26 0 00-49 11 26 26 0 002 10 26 26 0 0023 36 26 26 0 0021-10h25a26 26 0 0046-16 26 26 0 00-2-10 26 26 0 00-23-36zm8 41a10 10 0 01-8 15 10 10 0 01-9-6 8 8 0 00-8-4h-34a8 8 0 00-7 4 10 10 0 01-18-4 10 10 0 011-5 8 8 0 000-10 10 10 0 018-15 10 10 0 0110 8 8 8 0 008 7h31a8 8 0 008-7 10 10 0 0119 2 10 10 0 01-1 5 8 8 0 000 10z"
-            />
-            <path
-              d="M176 192a24 24 0 00-24 24 8 8 0 0016 0 8 8 0 0116 0 8 8 0 0016 0 24 24 0 00-24-24z"
-            />
-            <path
-              d="M352 200a24 24 0 00-24 24 8 8 0 0016 0 8 8 0 0116 0 8 8 0 0016 0 24 24 0 00-24-24z"
-            />
-            <path
-              d="M256 152a8 8 0 100-16 24 24 0 00-24 24 8 8 0 008 8 8 8 0 008-8 8 8 0 018-8z"
-            />
-            <circle cx="256" cy="224" r="8" />
-            <circle cx="296" cy="176" r="8" />
-          </svg>
+          <div class="doodle-2-wrapper js-stagger down">
+            <svg
+              class="doodle-2"
+              xmlns="http://www.w3.org/2000/svg"
+              xmlns:xlink="http://www.w3.org/1999/xlink"
+              viewBox="0 0 512 512"
+            >
+              <path
+                d="M488 368h-1l-15-113a8 8 0 00-8-7h-24a63 63 0 00-19-45 64 64 0 00-33-18 64 64 0 00-62-41 96 96 0 00-156 0 64 64 0 00-62 41 64 64 0 00-33 18 63 63 0 00-19 45h-8a8 8 0 00-8 7L25 368h-1a8 8 0 00-8 8v32a8 8 0 008 8h464a8 8 0 008-8v-32a8 8 0 00-8-8zM86 214a47 47 0 0129-14 8 8 0 007-5 48 48 0 0151-35 8 8 0 008-3 80 80 0 01134 0 8 8 0 008 3 48 48 0 0151 35 8 8 0 007 5 48 48 0 0143 48H72a48 48 0 0114-34zm-31 50h402l14 104H41zm425 136H32v-16h448z"
+              />
+              <path d="M448 315a8 8 0 00-16 2l4 28a8 8 0 1016-2z" />
+              <path
+                d="M437 296a8 8 0 007-9l-1-8a8 8 0 10-16 2l1 8a8 8 0 009 7z"
+              />
+              <path
+                d="M289 280a26 26 0 00-24 15h-19a26 26 0 00-49 11 26 26 0 002 10 26 26 0 0023 36 26 26 0 0021-10h25a26 26 0 0046-16 26 26 0 00-2-10 26 26 0 00-23-36zm8 41a10 10 0 01-8 15 10 10 0 01-9-6 8 8 0 00-8-4h-34a8 8 0 00-7 4 10 10 0 01-18-4 10 10 0 011-5 8 8 0 000-10 10 10 0 018-15 10 10 0 0110 8 8 8 0 008 7h31a8 8 0 008-7 10 10 0 0119 2 10 10 0 01-1 5 8 8 0 000 10z"
+              />
+              <path
+                d="M176 192a24 24 0 00-24 24 8 8 0 0016 0 8 8 0 0116 0 8 8 0 0016 0 24 24 0 00-24-24z"
+              />
+              <path
+                d="M352 200a24 24 0 00-24 24 8 8 0 0016 0 8 8 0 0116 0 8 8 0 0016 0 24 24 0 00-24-24z"
+              />
+              <path
+                d="M256 152a8 8 0 100-16 24 24 0 00-24 24 8 8 0 008 8 8 8 0 008-8 8 8 0 018-8z"
+              />
+              <circle cx="256" cy="224" r="8" />
+              <circle cx="296" cy="176" r="8" />
+            </svg>
+          </div>
         </div>
         <div class="text-container">
-          <h1 class="h1">Barkin' benefits</h1>
+          <h1 class="h1 js-stagger up">Barkin' benefits</h1>
           <ul class="icon-list">
             <li class="icon-list-entry">
               <div class="icon-list-entry-icon">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  xmlns:xlink="http://www.w3.org/1999/xlink"
-                >
-                  <use xlink:href="#paw"></use>
-                </svg>
+                <div class="icon-wrapper js-stagger">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    xmlns:xlink="http://www.w3.org/1999/xlink"
+                  >
+                    <use xlink:href="#paw"></use>
+                  </svg>
+                </div>
               </div>
               <div class="icon-list-entry-content">
-                <h2 class="h2">Glossy skin + coat</h2>
-                <p class="p">
+                <h2 class="h2 js-stagger up">Glossy skin + coat</h2>
+                <p class="p js-stagger up">
                   Real food diets have been linked to longer lifespans in dogs.
                   You are what you eat, and same goes for pupper.
                 </p>
@@ -252,16 +300,18 @@
             </li>
             <li class="icon-list-entry">
               <div class="icon-list-entry-icon">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  xmlns:xlink="http://www.w3.org/1999/xlink"
-                >
-                  <use xlink:href="#paw"></use>
-                </svg>
+                <div class="icon-wrapper js-stagger">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    xmlns:xlink="http://www.w3.org/1999/xlink"
+                  >
+                    <use xlink:href="#paw"></use>
+                  </svg>
+                </div>
               </div>
               <div class="icon-list-entry-content">
-                <h2 class="h2">Zipping energy</h2>
-                <p class="p">
+                <h2 class="h2 js-stagger up">Zipping energy</h2>
+                <p class="p js-stagger up">
                   Unoxidized good fats translate to a shinier, glossier coat and
                   healthier skin.
                 </p>
@@ -269,16 +319,18 @@
             </li>
             <li class="icon-list-entry">
               <div class="icon-list-entry-icon">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  xmlns:xlink="http://www.w3.org/1999/xlink"
-                >
-                  <use xlink:href="#paw"></use>
-                </svg>
+                <div class="icon-wrapper js-stagger">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    xmlns:xlink="http://www.w3.org/1999/xlink"
+                  >
+                    <use xlink:href="#paw"></use>
+                  </svg>
+                </div>
               </div>
               <div class="icon-list-entry-content">
-                <h2 class="h2">Boost joint mobility</h2>
-                <p class="p">
+                <h2 class="h2 js-stagger up">Boost joint mobility</h2>
+                <p class="p js-stagger up">
                   Fresh ingredients are easy to digest and giver your pupper
                   energy for days.
                 </p>
@@ -298,32 +350,32 @@
             alt=""
           />
         </div>
-        <h1 class="h1">So what's in it?</h1>
+        <h1 class="h1 js-stagger up">So what's in it?</h1>
         <ul class="ingredient-list">
           <li class="ingredient-list-entry">
-            <h2 class="h2">Salmon + tuna</h2>
-            <p class="p">
+            <h2 class="h2 js-stagger up">Salmon + tuna</h2>
+            <p class="p js-stagger up">
               Salmon is a great source of omega-3 fatty acids, wich supports the
               immune system, may decrease inflammation in the long term.
             </p>
           </li>
           <li class="ingredient-list-entry">
-            <h2 class="h2">Green peas</h2>
-            <p class="p">
+            <h2 class="h2 js-stagger up">Green peas</h2>
+            <p class="p js-stagger up">
               These vitamins and minerals are good for your dog's vision, skin,
               digestion, immune system, nerves, heart, and more.
             </p>
           </li>
           <li class="ingredient-list-entry">
-            <h2 class="h2">Blueberries</h2>
-            <p class="p">
+            <h2 class="h2 js-stagger up">Blueberries</h2>
+            <p class="p js-stagger up">
               Blueberries are a great low-calorie treat for dogs. They also
               contain antioxydants, fiber and vitamins C and K.
             </p>
           </li>
           <li class="ingredient-list-entry">
-            <h2 class="h2">Sweat potato</h2>
-            <p class="p">
+            <h2 class="h2 js-stagger up">Sweat potato</h2>
+            <p class="p js-stagger up">
               A safe, healthy, and natural treat for dogs, offering a range of
               health benefits
             </p>
@@ -331,6 +383,16 @@
         </ul>
       </div>
     </div>
+
+    <p class="info js-info">
+      UI experimentation based on
+      <a
+        href="https://dribbble.com/shots/11062509-PanPan-Dog-Treats-UI"
+        target="_blank"
+        rel="noreferrer"
+        >this Dribbble shot by Daniel Tan</a
+      >.
+    </p>
 
     <canvas id="js-canvas"></canvas>
 

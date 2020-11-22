@@ -17,9 +17,10 @@ const LERP_TRESHOLD = 0.001;
 const LERP_FACTOR = 0.2;
 
 class ZipBagAnimation extends Object3D {
-  constructor() {
+  constructor(options) {
     super();
 
+    this.whenReadyPromise = options.whenReadyPromise;
     this.needsUpdate = false;
     this.scrollAmountTarget = 0;
     this.scrollAmount = 0;
@@ -36,9 +37,9 @@ class ZipBagAnimation extends Object3D {
 
     // this.initGUI();
 
-    new TextureLoader().load(zipBagtexture, (texture) => {
-      this.flow.cm.object3D.material.uniforms.uTexture.value = texture;
-    });
+    this.executor = (resolve) => {
+      resolve("resolve");
+    };
   }
 
   initZipBag() {
@@ -182,6 +183,15 @@ class ZipBagAnimation extends Object3D {
     this.helper.dispose();
     this.ingredients.dispose();
     this.frame.dispose();
+  }
+
+  init() {
+    return new Promise((resolve) => {
+      new TextureLoader().load(zipBagtexture, (texture) => {
+        this.flow.cm.object3D.material.uniforms.uTexture.value = texture;
+        resolve();
+      });
+    });
   }
 }
 
