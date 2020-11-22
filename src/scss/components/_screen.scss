@@ -1,5 +1,5 @@
 .screen {
-  min-height: 100vh; // Do not explicitly set height because content will overflow on smaller devices
+  height: calc(var(--vh, 1vh) * 100);
   width: 100%;
   display: flex; // Center children verticaly
   overflow: hidden; // Prevent scrollbar on small devices when increasing the column-zipbag dimensions

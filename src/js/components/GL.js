@@ -76,11 +76,14 @@ class GL {
     this.updateCameraPosition();
   }
 
-  onResize() {
+  onResize(reset) {
     this.setCameraFrustrum();
     this.setRendererSize();
     this.setScrollableHeight();
-    this.reset();
+
+    if (reset) {
+      this.reset();
+    }
   }
 
   updateCameraPosition() {
